@@ -1,23 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package CourseManagementSystem;
 
 import java.util.HashMap;
 
-/**
- *
- * @author 2289679
- */
-
 public abstract class Account {
 
-    private String firstName;
-    private String lastName;
-    private int id;
-    private String password;
-    private HashMap<Integer, String> userInfo;
+    String firstName;
+    String lastName;
+    int id;
+    String password;
+    //database with all IDs and passwords
+    static HashMap<Integer, String> database = new HashMap<>();
 
     public String getFirstName() {
         return firstName;
@@ -29,14 +20,6 @@ public abstract class Account {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public HashMap<Integer, String> getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(HashMap<Integer, String> userInfo) {
-        this.userInfo = userInfo;
     }
 
     public void setLastName(String lastName) {
@@ -59,19 +42,13 @@ public abstract class Account {
         this.password = password;
     }
 
-    public abstract void displayActions(); 
+    public abstract void displayActions();
 
     public abstract void viewCourses();
 
-    public static void login() {
-        
+    //method to seperate different methods
+    public static void printSeperation() {
+        System.out.println("-----------------------------------------------------------------");
     }
 
-    public static void logout() {
-        
-    }
-    
-    public static void mainMenu(){
-        
-    }
 }
