@@ -1,3 +1,4 @@
+package coursemanagementsystem;
 
 import java.util.HashMap;
 
@@ -7,8 +8,9 @@ public abstract class Account {
     String lastName;
     int id;
     String password;
-    //database with all IDs and passwords
-    static HashMap<Integer, String> database = new HashMap<>();
+
+    public Account() {
+    }
 
     public String getFirstName() {
         return firstName;
@@ -41,14 +43,4 @@ public abstract class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-
-    public abstract void displayActions();
-
-    public abstract void viewCourses();
-
-    //method to seperate different methods
-    public static void printSeperation() {
-        System.out.println("-----------------------------------------------------------------");
-    }
-
 }
