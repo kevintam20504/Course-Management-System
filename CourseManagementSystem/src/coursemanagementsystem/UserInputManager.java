@@ -72,7 +72,8 @@ public class UserInputManager {
                 break;
         }
         System.out.println("Wrong id or password. Please try again.");
-        return null;
+        // call login() again if user enters wrong combination
+        return login();
     }
 
     public static void displayActions(Object accountType) {
