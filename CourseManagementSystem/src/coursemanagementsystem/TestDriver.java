@@ -4,20 +4,23 @@
  */
 package coursemanagementsystem;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  *
  * @author Gary
  */
 public class TestDriver {
 
-    public static void main(String[] args) {
-        //for testing login
-        Student s1 = new Student(1, "password1");
-        Student s2 = new Student(2, "password2");
-        Student s3 = new Student(3, "password3");
-
-        Instructor i1 = new Instructor(4, "password4");
-
-        System.out.println("returned: " + UserInputManager.login());
+    public static void main(String[] args) throws InterruptedException {
+        //for testing stuff
+        System.out.println(Time.getTime());
+        Instructor i = new Instructor(1, "p","fName","lName");
+        Course c = new Course(0, "name", i);
+        i.postClassFeedBack(c, "feedback");
+        TimeUnit.SECONDS.sleep(5);
+        System.out.println(Time.getTime());
+        i.postClassFeedBack(c, "feedback2");
+        System.out.println(c.getClassFeedback());
     }
 }

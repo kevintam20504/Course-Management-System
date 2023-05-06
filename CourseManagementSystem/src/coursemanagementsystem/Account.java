@@ -4,16 +4,18 @@ import java.util.HashMap;
 
 public abstract class Account {
 
-    String firstName;
-    String lastName;
-    int id;
-    String password;
+    protected String firstName;
+    protected String lastName;
+    protected int id;
+    protected String password;
 
-    public Account() {
+    public Account(int id, String password) {
+        this.id = id;
+        this.password = password;
     }
 
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public void setFirstName(String firstName) {
@@ -21,7 +23,7 @@ public abstract class Account {
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public void setLastName(String lastName) {
@@ -29,7 +31,7 @@ public abstract class Account {
     }
 
     public int getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(int id) {
@@ -37,10 +39,13 @@ public abstract class Account {
     }
 
     public String getPassword() {
-        return password;
+        return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public abstract void performAction(int userOption);
+    
 }
