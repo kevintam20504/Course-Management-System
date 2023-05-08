@@ -22,6 +22,7 @@ public class Course {
         this.name = name;
         this.teacher = teacher;
         this.courses.put(courseId, this);
+        teacher.getCourses().add(this);
     }
 
     public int getCourseId() {
@@ -86,6 +87,11 @@ public class Course {
 
     public void viewGrades() {
 
+    }
+    
+    @Override
+    public String toString() {
+        return name + " (" + courseId + ")" + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students";
     }
 
 }
