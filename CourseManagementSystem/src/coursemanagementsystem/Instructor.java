@@ -1,19 +1,36 @@
 package coursemanagementsystem;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Instructor extends Account {
 
-    static HashMap<Integer, Instructor> teachers = new HashMap<>();
-    static HashMap<Integer, String> database = new HashMap<>();
+    private ArrayList<Course> courses = new ArrayList<>();
+    private static HashMap<Integer, Instructor> teachers = new HashMap<>();
+    private static HashMap<Integer, String> database = new HashMap<>();
 
-    public Instructor(int id, String password) {
-        this.id = id;
-        this.password = password;
+    public Instructor(int id, String password, String fName, String lName) {
+        super(id, password);
+        this.firstName = fName;
+        this.lastName = lName;
         Instructor.database.put(id, password);
         Instructor.teachers.put(id, this);
+    }
+
+    public static HashMap<Integer, Instructor> getTeachers() {
+        return teachers;
+    }
+
+    public static void setTeachers(HashMap<Integer, Instructor> teachers) {
+        Instructor.teachers = teachers;
+    }
+
+    public static HashMap<Integer, String> getDatabase() {
+        return database;
+    }
+
+    public static void setDatabase(HashMap<Integer, String> database) {
+        Instructor.database = database;
     }
 
     public void viewCourses() {
@@ -21,23 +38,22 @@ public class Instructor extends Account {
 
     public void postGrade() {
     }
-    
-    public void postClassFeedBack(String feedback) {
-        LocalDateTime myDateObj = LocalDateTime.now();
-        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
-        String formattedDate = myDateObj.format(myFormatObj);
 
-        Course.getClassFeedback().put(formattedDate, feedback);
+    public void postClassFeedBack(Course course, String feedback) {
+        course.getClassFeedback().put(course, feedback);
     }
-    
-    public void postStudentFeedBack(){
-        
+
+    public void postStudentFeedBack() {
+
+    }
+
+    @Override
+    public void performAction(int userOption) {
     }
 
     @Override
     public String toString() {
-        //testing to see if login is giving correct instructor
-        return "Instructor{" + "id: " + this.id + " password: " + this.password + '}';
+        return "[" + this.id + "]" + this.lastName + " " + this.firstName;
     }
 
 }

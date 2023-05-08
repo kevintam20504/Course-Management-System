@@ -20,7 +20,7 @@ public class UserInputManager {
         return userOption;
     }
 
-    public static Object login() {
+    public static Account login() {
         Scanner sc = new Scanner(System.in);
         System.out.print("""
                          ---------------------------------------------
@@ -34,14 +34,14 @@ public class UserInputManager {
                          """);
         int userOption = sc.nextInt();
 
-        while (userOption < 1  || userOption > 4) {
+        while (userOption < 1 || userOption > 4) {
             System.out.println("Invalid input. Please try again.");
             userOption = sc.nextInt();
         }
 
         if (userOption == 4) {
             System.out.println("Returning to main menu.");
-            return false;
+            return null;
         }
 
         System.out.println("Enter your ID:");
@@ -51,20 +51,20 @@ public class UserInputManager {
 
         switch (userOption) {
             case 1:
-                if (Student.database.containsKey(id) && Student.database.get(id).equals(password)) {
-                    return Student.students.get(id);
+                if (Student.getDatabase().containsKey(id) && Student.getDatabase().get(id).equals(password)) {
+                    return Student.getStudents().get(id);
                 }
                 break;
 
             case 2:
-                if (Instructor.database.containsKey(id) && Instructor.database.get(id).equals(password)) {
-                    return Instructor.teachers.get(id);
+                if (Instructor.getDatabase().containsKey(id) && Instructor.getDatabase().get(id).equals(password)) {
+                    return Instructor.getTeachers().get(id);
                 }
                 break;
 
             case 3:
-                if (Admin.database.containsKey(id) && Admin.database.get(id).equals(password)) {
-                    return Admin.admin.get(id);
+                if (Admin.getDatabase().containsKey(id) && Admin.getDatabase().get(id).equals(password)) {
+                    return Admin.getAdmin().get(id);
                 }
                 break;
 
@@ -76,7 +76,7 @@ public class UserInputManager {
         return login();
     }
 
-    public static void displayActions(Object accountType) {
+    public static void displayActions(Account accountType) {
         if (accountType != null) {
             if (accountType.getClass() == Student.class) {
                 studentMenu();
@@ -92,10 +92,17 @@ public class UserInputManager {
         Scanner sc = new Scanner(System.in);
         System.out.print("""
                          _____________________________________________
-                         Admin Menu(needs to be finished)
+                         Admin Menu
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]admin
+                         [1]Add Account
+                         [2]Delete Account
+                         [3]Add Course
+                         [4]Delete Course
+                         [5]View Students
+                         [6]View Instructors
+                         [7]View Courses
+                         [8]Logout
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
@@ -107,10 +114,14 @@ public class UserInputManager {
         Scanner sc = new Scanner(System.in);
         System.out.print("""
                          _____________________________________________
-                         Student Menu(needs to be finished)
+                         Student Menu
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]student
+                         [1]View Courses
+                         [2]View Grades
+                         [3]View Class Feedback
+                         [4]View Individual Feedback
+                         [5]Logout
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
@@ -122,10 +133,15 @@ public class UserInputManager {
         Scanner sc = new Scanner(System.in);
         System.out.print("""
                          _____________________________________________
-                         Instructor Menu(needs to be finished)
+                         Instructor Menu
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]instructor
+                         [1]View Courses
+                         [2]Submit Grades
+                         [3]View Students
+                         [4]Submit Class Feedback
+                         [5]Submit Individual Feedback
+                         [6]Logout
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();

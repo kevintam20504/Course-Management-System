@@ -10,15 +10,22 @@ public class Course {
     private int courseId;
     private String name;
     private Instructor teacher;
-    private ArrayList<Student> students = new ArrayList<>();
+    private static HashMap<Integer, Course> courses = new HashMap<>();
     private HashMap<Student, Integer> grades = new HashMap<>();
     private static final int MAX_STUDENTS = 30;
     private static final int MAX_TEACHERS = 1;
-    private static HashMap<Object, String> classFeedback = new HashMap<>();
+    private HashMap<Course, String> classFeedback = new HashMap<>();
     private HashMap<Student, String> feedback = new HashMap<>();
 
+    public Course(int courseId, String name, Instructor teacher) {
+        this.courseId = courseId;
+        this.name = name;
+        this.teacher = teacher;
+        this.courses.put(courseId, this);
+    }
+
     public int getCourseId() {
-        return courseId;
+        return this.courseId;
     }
 
     public void setCourseId(int courseId) {
@@ -26,7 +33,7 @@ public class Course {
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -34,39 +41,39 @@ public class Course {
     }
 
     public Instructor getTeacher() {
-        return teacher;
+        return this.teacher;
     }
 
     public void setTeacher(Instructor teacher) {
         this.teacher = teacher;
     }
 
-    public ArrayList<Student> getStudents() {
-        return students;
+    public static HashMap<Integer, Course> getCourses() {
+        return courses;
     }
 
-    public void setStudents(ArrayList<Student> students) {
-        this.students = students;
+    public static void setCourses(HashMap<Integer, Course> courses) {
+        Course.courses = courses;
     }
 
     public HashMap<Student, Integer> getGrades() {
-        return grades;
+        return this.grades;
     }
 
     public void setGrades(HashMap<Student, Integer> grades) {
         this.grades = grades;
     }
 
-    public static HashMap<Object, String> getClassFeedback() {
-        return classFeedback;
+    public HashMap<Course, String> getClassFeedback() {
+        return this.classFeedback;
     }
 
-    public static void setClassFeedback(HashMap<Object, String> classFeedback) {
-        Course.classFeedback = classFeedback;
+    public void setClassFeedback(HashMap<Course, String> classFeedback) {
+        this.classFeedback = classFeedback;
     }
 
     public HashMap<Student, String> getFeedback() {
-        return feedback;
+        return this.feedback;
     }
 
     public void setFeedback(HashMap<Student, String> feedback) {
