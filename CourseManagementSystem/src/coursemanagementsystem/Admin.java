@@ -62,6 +62,7 @@ public class Admin extends Account {
     }
 
     public void viewCourses() {
+        System.out.println("All avaiblable courses at Vanier:\n");
         List<Course> list = new ArrayList<>(Course.getCourses().values());
         for (Course c : list) {
             System.out.println(c);
@@ -69,7 +70,37 @@ public class Admin extends Account {
     }
     
     @Override
-    public void performAction(int userOption) {
+    public static void performAction(int userOption) {
+        switch (userOption) {
+            case 1:
+                viewCourses();
+                Admin.performAction(UserInputManager.adminMenu());
+                break;
+            case 2:
+                UserInputManager.newCourse();
+                Admin.performAction(UserInputManager.adminMenu());
+                break;
+            case 3:
+                UserInputManager.deleteCourse();
+                Admin.performAction(UserInputManager.adminMenu());
+                break;
+            case 4:
+                UserInputManager.newAccount();
+                Admin.performAction(UserInputManager.adminMenu());
+                break;
+            case 5:
+                UserInputManager.deleteAccount();
+                Admin.performAction(UserInputManager.adminMenu());
+                break;
+            case 6:
+                UserInputManager.assignCourse();
+                Admin.performAction(UserInputManager.adminMenu());
+                break;
+            case 7:
+            //logout
+                break;
+        }
+
     }
 
 }
