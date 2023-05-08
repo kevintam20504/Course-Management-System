@@ -13,6 +13,13 @@ public abstract class Account {
         this.id = id;
         this.password = password;
     }
+    
+    public Account(String firstName, String lastName, int id, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = id;
+        this.password = password;
+    }
 
     public String getFirstName() {
         return this.firstName;
