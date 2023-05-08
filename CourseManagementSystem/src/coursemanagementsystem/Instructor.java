@@ -15,6 +15,14 @@ public class Instructor extends Account {
         Instructor.teachers.put(id, this);
     }
 
+    public ArrayList<Course> getCourses() {
+        return courses;
+    }
+
+    public void setCourses(ArrayList<Course> courses) {
+        this.courses = courses;
+    }
+
     public static HashMap<Integer, Instructor> getTeachers() {
         return teachers;
     }
@@ -31,11 +39,11 @@ public class Instructor extends Account {
         Instructor.database = database;
     }
 
-    public void viewCourses(Instructor instructor) {
+    public void viewCourses() {
         System.out.println("All courses taught:\n ");
-        for (Course courses : instructor.getCourses()) {
+        for (Course course : courses) {
             System.out.print("\n" + courses + ", Average: ");
-            courses.getGrades().values().stream().mapToInt(n -> n).average().ifPresent(System.out::print);
+            course.getGrades().values().stream().mapToInt(n -> n).average().ifPresent(System.out::print);
             System.out.println("");
         }
     }
@@ -52,24 +60,24 @@ public class Instructor extends Account {
     }
 
     @Override
-    public void performAction(int userOption, Instructor instructor) {
+    public void performAction() {
         switch (userOption) {
-            case 1:
-                instructor.viewCourses(instructor);
-                Instructor.performAction(UserInputManager.instructorMenu(), instructor);
+            case 1://view courses
+                viewCourses();
+                performAction(UserInputManager.instructorMenu());
                 break;
-            case 2:
-                instructor.postGrade();
-                Instructor.performAction(UserInputManager.instructorMenu(), instructor);
+            case 2://submit grades
+                postGrade();
+                performAction(UserInputManager.instructorMenu());
                 break;
-            case 3:
-                instructor.postClassFeedBack(UserInputManager.enterFeedback());
-                Instructor.performAction(UserInputManager.instructorMenu(), instructor);
+            case 3://view students
+                performAction(UserInputManager.instructorMenu());
                 break;
-            case 4:
-                //student feedback
+            case 4://class feedback
                 break;
-            case 5:
+            case 5: //student feedback
+                break;
+            case 6:
                 //logout
                 break;
         }

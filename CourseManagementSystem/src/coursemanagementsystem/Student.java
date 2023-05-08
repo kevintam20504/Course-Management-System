@@ -2,8 +2,6 @@ package coursemanagementsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Student extends Account {
 
@@ -11,10 +9,8 @@ public class Student extends Account {
     private static HashMap<Integer, Student> students = new HashMap<>();
     private static HashMap<Integer, String> database = new HashMap<>();
 
-    public Student(int id, String password, String fName, String lName) {
-        super(id, password);
-        this.firstName = fName;
-        this.lastName = lName;
+    public Student(String fName, String lName, int id, String password) {
+        super(fName, lName, id, password);
         Student.database.put(id, password);
         Student.students.put(id, this);
     }
@@ -51,7 +47,7 @@ public class Student extends Account {
     }
 
     @Override
-    public void performAction(int userOption) {
+    public void performAction() {
     }
 
     @Override

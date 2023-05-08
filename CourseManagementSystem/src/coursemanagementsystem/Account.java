@@ -1,7 +1,5 @@
 package coursemanagementsystem;
 
-import java.util.HashMap;
-
 public abstract class Account {
 
     protected String firstName;
@@ -13,7 +11,7 @@ public abstract class Account {
         this.id = id;
         this.password = password;
     }
-    
+
     public Account(String firstName, String lastName, int id, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -52,7 +50,7 @@ public abstract class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-    
-    public abstract void performAction(int userOption);
-    
+
+    public abstract void performAction();
+
 }

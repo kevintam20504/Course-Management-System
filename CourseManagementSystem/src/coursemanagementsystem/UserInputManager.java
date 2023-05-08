@@ -76,18 +76,15 @@ public class UserInputManager {
         return login();
     }
 
-    public static void displayActions(Account accountType) {
-        if (accountType != null) {
-            if (accountType.getClass() == Student.class) {
-                studentMenu();
-            } else if (accountType.getClass() == Instructor.class) {
-                Instructor instructor = Instructor.getTeachers().get(accountType.getId());
-                int userOption = instructorMenu();
-                Instructor.performAction(userOption, instructor);
-            } else if (accountType.getClass() == Admin.class) {
-                Admin.performAction(adminMenu());
-            }
+    public static int displayActions(Account accountType) {
+        if (accountType.getClass() == Student.class) {
+            return studentMenu();
+        } else if (accountType.getClass() == Instructor.class) {
+            return instructorMenu();
+        } else if (accountType.getClass() == Admin.class) {
+            return adminMenu();
         }
+        return 0;
     }
 
     public static int adminMenu() {
@@ -109,10 +106,6 @@ public class UserInputManager {
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
-        while (userOption != 1 && userOption != 2 && userOption != 3 && userOption != 4 && userOption != 5 && userOption != 6 && userOption != 7 && userOption != 8 && userOption != 9) {
-            System.out.println("Invalid input, try again: ");
-            userOption = sc.nextInt();
-
         return userOption;
     }
 
@@ -131,7 +124,6 @@ public class UserInputManager {
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
-
         return userOption;
     }
 
@@ -151,14 +143,16 @@ public class UserInputManager {
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
-        while (userOption != 1 && userOption != 2 && userOption != 3 && userOption != 4 && userOption != 5 && userOption != 6) {
-            System.out.println("Invalid input, try again: ");
-            userOption = sc.nextInt();
-        }
-
         return userOption;
     }
     
+    public static String enterFeedback() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter message do you want to send: ");
+        String message = sc.next();
+        return message;
+    }
+
     public static void deleteAccount() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the ID of the account you want to delete: ");
@@ -175,7 +169,7 @@ public class UserInputManager {
         }
         System.out.println("Account deleted");
     }
-    
+
     public static void newAccount() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter first name: ");
@@ -211,7 +205,7 @@ public class UserInputManager {
         }
 
     }
-    
+
     public static void assignCourse() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Who is the Student that needs a class added (enter their ID): ");
@@ -228,13 +222,13 @@ public class UserInputManager {
             inputCourseID = sc.nextInt();
         }
         Course course = Course.getCourses().get(inputCourseID);
-        if (course.getStudents().size() == Course.MAX_STUDENTS) {
+        if (course.getStudents().size() == Course.getMAX_STUDENTS()) {
             System.out.println(course.getName() + " is already full");
         } else {
             System.out.println(course.getName() + " has been added to " + student.getFirstName() + "'s schedule");
         }
     }
-    
+
     public static void newCourse() { //need to make exception handling better
         Scanner sc = new Scanner(System.in);
         System.out.println("What is the name of the course you want to add: ");
@@ -269,7 +263,7 @@ public class UserInputManager {
         }
 
     }
-    
+
     public static void deleteCourse() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the course ID that you want to delete: ");
