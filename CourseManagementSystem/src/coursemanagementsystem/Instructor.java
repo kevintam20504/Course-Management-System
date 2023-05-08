@@ -9,10 +9,8 @@ public class Instructor extends Account {
     private static HashMap<Integer, Instructor> teachers = new HashMap<>();
     private static HashMap<Integer, String> database = new HashMap<>();
 
-    public Instructor(int id, String password, String fName, String lName) {
-        super(id, password);
-        this.firstName = fName;
-        this.lastName = lName;
+    public Instructor(String firstName, String lastName, int id, String password) {
+        super(firstName, lastName, id, password);
         Instructor.database.put(id, password);
         Instructor.teachers.put(id, this);
     }
@@ -33,7 +31,13 @@ public class Instructor extends Account {
         Instructor.database = database;
     }
 
-    public void viewCourses() {
+    public void viewCourses(Instructor instructor) {
+        System.out.println("All courses taught:\n ");
+        for (Course courses : instructor.getCourses()) {
+            System.out.print("\n" + courses + ", Average: ");
+            courses.getGrades().values().stream().mapToInt(n -> n).average().ifPresent(System.out::print);
+            System.out.println("");
+        }
     }
 
     public void postGrade() {
@@ -48,7 +52,27 @@ public class Instructor extends Account {
     }
 
     @Override
-    public void performAction(int userOption) {
+    public void performAction(int userOption, Instructor instructor) {
+        switch (userOption) {
+            case 1:
+                instructor.viewCourses(instructor);
+                Instructor.performAction(UserInputManager.instructorMenu(), instructor);
+                break;
+            case 2:
+                instructor.postGrade();
+                Instructor.performAction(UserInputManager.instructorMenu(), instructor);
+                break;
+            case 3:
+                instructor.postClassFeedBack(UserInputManager.enterFeedback());
+                Instructor.performAction(UserInputManager.instructorMenu(), instructor);
+                break;
+            case 4:
+                //student feedback
+                break;
+            case 5:
+                //logout
+                break;
+        }
     }
 
     @Override
