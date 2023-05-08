@@ -34,7 +34,7 @@ public class UserInputManager {
                          """);
         int userOption = sc.nextInt();
 
-        while (userOption < 1 || userOption > 4) {
+        while (userOption != 1 && userOption != 2 && userOption != 3 && userOption != 4) {
             System.out.println("Invalid input. Please try again.");
             userOption = sc.nextInt();
         }
@@ -81,9 +81,11 @@ public class UserInputManager {
             if (accountType.getClass() == Student.class) {
                 studentMenu();
             } else if (accountType.getClass() == Instructor.class) {
-                instructorMenu();
+                Instructor instructor = Instructor.getTeachers().get(accountType.getId());
+                int userOption = instructorMenu();
+                Instructor.performAction(userOption, instructor);
             } else if (accountType.getClass() == Admin.class) {
-                adminMenu();
+                Admin.performAction(adminMenu());
             }
         }
     }
@@ -95,17 +97,21 @@ public class UserInputManager {
                          Admin Menu
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]Add Account
-                         [2]Delete Account
-                         [3]Add Course
-                         [4]Delete Course
-                         [5]View Students
-                         [6]View Instructors
-                         [7]View Courses
-                         [8]Logout
+                         [1]  View all Courses
+                         [2]  Create Course
+                         [3]  Delete Course
+                         [4]  Create new Account
+                         [5]  Delete an Account
+                         [6]  Assign Course to a Student
+                         [7]  View all Students
+                         [8]  View all Instructors
+                         [9]  Logout
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
+        while (userOption != 1 && userOption != 2 && userOption != 3 && userOption != 4 && userOption != 5 && userOption != 6 && userOption != 7 && userOption != 8 && userOption != 9) {
+            System.out.println("Invalid input, try again: ");
+            userOption = sc.nextInt();
 
         return userOption;
     }
@@ -145,8 +151,136 @@ public class UserInputManager {
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
+        while (userOption != 1 && userOption != 2 && userOption != 3 && userOption != 4 && userOption != 5 && userOption != 6) {
+            System.out.println("Invalid input, try again: ");
+            userOption = sc.nextInt();
+        }
 
         return userOption;
+    }
+    
+    public static void deleteAccount() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the ID of the account you want to delete: ");
+        int inputID = sc.nextInt();
+        if (Student.getDatabase().containsKey(inputID)) {
+            Student.getDatabase().remove(inputID);
+            Student.getStudents().remove(inputID);
+        } else if (Instructor.getDatabase().containsKey(inputID)) {
+            Instructor.getDatabase().remove(inputID);
+            Instructor.getTeachers().remove(inputID);
+        } else {
+            System.out.println("Cannot delete this user, try again");
+            deleteAccount();
+        }
+        System.out.println("Account deleted");
+    }
+    
+    public static void newAccount() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter first name: ");
+        String fname = sc.next();
+        System.out.println("Enter last name: ");
+        String lname = sc.next();
+        System.out.println("Enter new ID: ");
+        int newId = sc.nextInt();
+        while (Student.getDatabase().containsKey(newId) || Instructor.getDatabase().containsKey(newId)) {
+            System.out.println("Cannot create this ID, try again: ");
+            newId = sc.nextInt();
+        }
+        System.out.println("Enter password: ");
+        String newPass = sc.next();
+        System.out.println("Is this person:\n1. A student\n2. An instructor\nEnter: ");
+        int choice = sc.nextInt();
+        while (choice != 1 && choice != 2) {
+            System.out.println("Invalid, try again: ");
+            choice = sc.nextInt();
+        }
+        // if account is student
+        if (choice == 1) {
+            Student newStudent = new Student(fname, lname, newId, newPass);
+            Student.getDatabase().put(newId, newPass);
+            Student.getStudents().put(newId, newStudent);
+            System.out.println("Account created!");
+        } //if account is instructor
+        else {
+            Instructor newInstructor = new Instructor(fname, lname, newId, newPass);
+            Instructor.getDatabase().put(newId, newPass);
+            Instructor.getTeachers().put(newId, newInstructor);
+            System.out.println("Account created!");
+        }
+
+    }
+    
+    public static void assignCourse() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Who is the Student that needs a class added (enter their ID): ");
+        int inputID = sc.nextInt();
+        while (!Student.getStudents().containsKey(inputID)) {
+            System.out.println("Invalid ID try again: ");
+            inputID = sc.nextInt();
+        }
+        Student student = Student.getStudents().get(inputID);
+        System.out.println("What class does " + student.getFirstName() + " want to add (enter course ID): ");
+        int inputCourseID = sc.nextInt();
+        while (!Course.getCourses().containsKey(inputCourseID)) {
+            System.out.println("Invalid ID try again: ");
+            inputCourseID = sc.nextInt();
+        }
+        Course course = Course.getCourses().get(inputCourseID);
+        if (course.getStudents().size() == Course.MAX_STUDENTS) {
+            System.out.println(course.getName() + " is already full");
+        } else {
+            System.out.println(course.getName() + " has been added to " + student.getFirstName() + "'s schedule");
+        }
+    }
+    
+    public static void newCourse() { //need to make exception handling better
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is the name of the course you want to add: ");
+        String newCourseName = sc.nextLine();
+        int newCourseId = 0;
+        int inputInstructorId = 0;
+        try {
+            System.out.println("Enter the course ID: ");
+            newCourseId = sc.nextInt();
+            if (Course.getCourses().containsKey(newCourseId)) {
+                throw new ArithmeticException();
+            }
+
+            try {
+                System.out.println("Who will teach this class (enter the instructor's id): ");
+                inputInstructorId = sc.nextInt();
+                while (!Instructor.getTeachers().containsKey(inputInstructorId)) {
+                    System.out.println("That instructor ID doesn't exist, try again: ");
+                    inputInstructorId = sc.nextInt();
+                }
+                Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
+                Course newCourse = new Course(newCourseId, newCourseName, instructor);
+                instructor.getCourses().add(newCourse);
+                System.out.println(newCourseName + " has been created");
+
+            } catch (Exception e) {
+                System.out.println("Invalid ID, try again");
+            }
+
+        } catch (Exception e) {
+            System.out.println("Invalid course ID");
+        }
+
+    }
+    
+    public static void deleteCourse() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the course ID that you want to delete: ");
+        int inputCourseId = sc.nextInt();
+        while (!Course.getCourses().containsKey(inputCourseId)) {
+            System.out.println("Invalid course ID, try again: ");
+            inputCourseId = sc.nextInt();
+        }
+        System.out.println(Course.getCourses().get(inputCourseId).getName() + " has been deleted");
+        Course.getCourses().remove(inputCourseId);
+
     }
 
 }
