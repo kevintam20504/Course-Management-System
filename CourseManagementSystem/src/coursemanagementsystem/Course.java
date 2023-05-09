@@ -11,8 +11,9 @@ public class Course {
     private ArrayList<Student> students = new ArrayList<>();
     private static HashMap<Integer, Course> courses = new HashMap<>();
     private HashMap<Student, Integer> grades = new HashMap<>();
-    private HashMap<Course, String> classFeedback = new HashMap<>();
-    private HashMap<Student, String> feedback = new HashMap<>();
+    private ArrayList<String> classFeedback = new ArrayList<>();
+    private ArrayList<String> feedbackList = new ArrayList<>();
+    private HashMap<Student, ArrayList<String>> studentFeedback = new HashMap<>();
     private static final int MAX_STUDENTS = 30;
     private static final int MAX_TEACHERS = 1;
 
@@ -65,27 +66,35 @@ public class Course {
     }
 
     public HashMap<Student, Integer> getGrades() {
-        return grades;
+        return this.grades;
     }
 
     public void setGrades(HashMap<Student, Integer> grades) {
         this.grades = grades;
     }
 
-    public HashMap<Course, String> getClassFeedback() {
+    public ArrayList<String> getClassFeedback() {
         return classFeedback;
     }
 
-    public void setClassFeedback(HashMap<Course, String> classFeedback) {
+    public void setClassFeedback(ArrayList<String> classFeedback) {
         this.classFeedback = classFeedback;
     }
 
-    public HashMap<Student, String> getFeedback() {
-        return feedback;
+    public ArrayList<String> getFeedback() {
+        return feedbackList;
     }
 
-    public void setFeedback(HashMap<Student, String> feedback) {
-        this.feedback = feedback;
+    public void setFeedback(ArrayList<String> feedback) {
+        this.feedbackList = feedback;
+    }
+
+    public HashMap<Student, ArrayList<String>> getStudentFeedback() {
+        return studentFeedback;
+    }
+
+    public void setStudentFeedback(HashMap<Student, ArrayList<String>> studentFeedback) {
+        this.studentFeedback = studentFeedback;
     }
 
     public static int getMAX_STUDENTS() {
@@ -98,21 +107,21 @@ public class Course {
 
     public void viewStudents() {
         System.out.println("All Students in this class");
-        for(Student s: students){
+        for (Student s : students) {
             System.out.println(s);
         }
 
     }
 
     public void viewGrades() {
-        for(Student s: students){
-            System.out.println(s.getFirstName()+" "+s.getLastName()+": "+grades.get(Student.getStudents().get(s.getId())));
+        for (Student s : students) {
+            System.out.println(s.getFirstName() + " " + s.getLastName() + ": " + grades.get(Student.getStudents().get(s.getId())));
         }
     }
 
     @Override
     public String toString() {
-        return "["+this.courseId+"] "+ name + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students";
+        return "[" + this.courseId + "] " + name + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students";
     }
 
 }

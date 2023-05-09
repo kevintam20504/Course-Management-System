@@ -12,6 +12,7 @@ public class Student extends Account {
     public Student(String fName, String lName, int id, String password) {
         super(fName, lName, id, password);
         Student.database.put(id, password);
+        Student.students.put(id, this);
     }
 
     public ArrayList<Course> getCourses() {
@@ -52,8 +53,28 @@ public class Student extends Account {
         }
     }
 
-    public void viewClassFeedback(Course course) {
-
+    public void viewClassFeedback() {
+        Course course = UserInputManager.getCourse();
+        
+        while(!this.courses.contains(course)){
+            System.out.println("This student is not in this course.");
+        }
+        System.out.println("Class feedback for " + course.getName() + ": ");
+        for (String feedback:course.getClassFeedback()) {
+            System.out.println(feedback);
+        }
+    }
+    
+    public void viewFeedback(){
+        Course course = UserInputManager.getCourse();
+        
+        while(!this.courses.contains(course)){
+            System.out.println("This student is not in this course.");
+        }
+        System.out.println("Individual feedback for " + course.getName() + ": ");
+        for (String feedback:course.getStudentFeedback().get(this)) {
+            System.out.println(feedback);
+        }
     }
 
     @Override
@@ -70,11 +91,11 @@ public class Student extends Account {
                     UserInputManager.goBack();
                     break;
                 case 3://view class feedback
-                    
+                    viewClassFeedback();
                     UserInputManager.goBack();
                     break;
                 case 4://view individual feedback
-                    
+                    viewFeedback();
                     UserInputManager.goBack();
                     break;
                 case 5://logout

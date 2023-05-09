@@ -51,9 +51,10 @@ public class UserInputManager {
         try {
             System.out.println("Enter password");
             password = sc.next();
-            if(Student.getDatabase().get(id)== null&&Instructor.getDatabase().get(id)==null&&Admin.getDatabase().get(id)==null)
+            if (Student.getDatabase().get(id) == null && Instructor.getDatabase().get(id) == null && Admin.getDatabase().get(id) == null) {
                 throw new NullPointerException();
-            
+            }
+
         } catch (NullPointerException e) {
             System.out.println("You need to initialize your password.");
             return null;
@@ -160,7 +161,7 @@ public class UserInputManager {
     public static String enterFeedback() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter message do you want to send: ");
-        String message = sc.next();
+        String message =  "[" +  Time.getTime() + "]: " + sc.nextLine();
         return message;
     }
 
@@ -233,6 +234,8 @@ public class UserInputManager {
         if (course.getStudents().size() == Course.getMAX_STUDENTS()) {
             System.out.println(course.getName() + " is already full");
         } else {
+            student.getCourses().add(course);
+            course.getStudents().add(student);
             System.out.println(course.getName() + " has been added to " + student.getFirstName() + "'s schedule");
         }
     }
@@ -334,4 +337,38 @@ public class UserInputManager {
         }
         System.out.println("Back to main menu");
     }
+
+    public static Course getCourse() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the id of the course you want to find.");
+        int inputId = sc.nextInt();
+        while (!Course.getCourses().containsKey(inputId)) {
+            System.out.println("Invalid course ID, try again: ");
+            inputId = sc.nextInt();
+        }
+        return Course.getCourses().get(inputId);
+    }
+
+    public static Student getStudent() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the id of the student you want to find.");
+        int inputId = sc.nextInt();
+        while (!Student.getStudents().containsKey(inputId)) {
+            System.out.println("Invalid student ID, try again: ");
+            inputId = sc.nextInt();
+        }
+        return Student.getStudents().get(inputId);
+    }
+
+    public static int getGrade() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter the grade you wish to assign the student.");
+        int grade = sc.nextInt();
+        while(grade<0 || grade>100){
+            System.out.println("Please enter a number between 0 and 100.");
+            grade = sc.nextInt();
+        }
+        return grade;
+    }
+
 }
