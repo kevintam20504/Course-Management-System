@@ -161,7 +161,7 @@ public class UserInputManager {
     public static String enterFeedback() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter message do you want to send: ");
-        String message =  "[" +  Time.getTime() + "]: " + sc.nextLine();
+        String message = "[" + Time.getTime() + "]: " + sc.nextLine();
         return message;
     }
 
@@ -311,7 +311,8 @@ public class UserInputManager {
             System.out.println("That ID does not exist, try again: ");
             inputId = sc.nextInt();
         }
-        if (!Student.getDatabase().get(inputId).equals(null) || !Instructor.getDatabase().get(inputId).equals(null)) {
+        if (Student.getDatabase().get(inputId) != null || Instructor.getDatabase().get(inputId) != null) {
+
             System.out.println("Update your password: ");
             String newPassword = sc.next();
             System.out.println("Password has been updated");
@@ -364,7 +365,7 @@ public class UserInputManager {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter the grade you wish to assign the student.");
         int grade = sc.nextInt();
-        while(grade<0 || grade>100){
+        while (grade < 0 || grade > 100) {
             System.out.println("Please enter a number between 0 and 100.");
             grade = sc.nextInt();
         }
