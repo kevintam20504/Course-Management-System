@@ -11,6 +11,8 @@ public class Admin extends Account {
 
     public Admin(int id, String password) {
         super(id, password);
+        firstName = "Admin";
+        lastName = " ";
         Admin.database.put(id, password);
         Admin.admin.put(id, this);
     }

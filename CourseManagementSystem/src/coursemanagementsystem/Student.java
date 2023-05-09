@@ -48,6 +48,25 @@ public class Student extends Account {
 
     @Override
     public void performAction() {
+        boolean exitCondition = false;
+        while (!exitCondition) {
+            switch (UserInputManager.adminMenu()) {
+                case 1://view courses
+                    break;
+                case 2://view grades
+                    break;
+                case 3://view class feedback
+                    break;
+                case 4://view individual feedback
+                    break;
+                case 5://logout
+                    exitCondition = true;
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    break;
+            }
+        }
     }
 
     @Override

@@ -75,7 +75,7 @@ public class UserInputManager {
         // call login() again if user enters wrong combination
         return login();
     }
-
+/*
     public static int displayActions(Account accountType) {
         if (accountType.getClass() == Student.class) {
             return studentMenu();
@@ -86,6 +86,7 @@ public class UserInputManager {
         }
         return 0;
     }
+*/
 
     public static int adminMenu() {
         Scanner sc = new Scanner(System.in);
@@ -94,12 +95,12 @@ public class UserInputManager {
                          Admin Menu
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]  View all Courses
-                         [2]  Create Course
-                         [3]  Delete Course
-                         [4]  Create new Account
-                         [5]  Delete an Account
-                         [6]  Assign Course to a Student
+                         [1]  Create Course
+                         [2]  Delete Course
+                         [3]  Create new Account
+                         [4]  Delete an Account
+                         [5]  Assign Course to a Student
+                         [6]  View all Courses
                          [7]  View all Students
                          [8]  View all Instructors
                          [9]  Logout
@@ -116,11 +117,11 @@ public class UserInputManager {
                          Student Menu
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]View Courses
-                         [2]View Grades
-                         [3]View Class Feedback
-                         [4]View Individual Feedback
-                         [5]Logout
+                         [1]  View Courses
+                         [2]  View Grades
+                         [3]  View Class Feedback
+                         [4]  View Individual Feedback
+                         [5]  Logout
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
@@ -134,12 +135,12 @@ public class UserInputManager {
                          Instructor Menu
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]View Courses
-                         [2]Submit Grades
-                         [3]View Students
-                         [4]Submit Class Feedback
-                         [5]Submit Individual Feedback
-                         [6]Logout
+                         [1]  View Courses
+                         [2]  Submit Grades
+                         [3]  View Students
+                         [4]  Submit Class Feedback
+                         [5]  Submit Individual Feedback
+                         [6]  Logout
                          _____________________________________________
                          """);
         int userOption = sc.nextInt();
