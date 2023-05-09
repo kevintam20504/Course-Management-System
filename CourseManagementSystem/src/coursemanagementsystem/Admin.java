@@ -33,37 +33,24 @@ public class Admin extends Account {
         Admin.admin = admin;
     }
 
-    public Account addAccount() {
-        return null;
-    }
-
-    public void deleteAccount() {
-
-    }
-
-    public Course addCourse() {
-        return null;
-    }
-
-    public void deleteCourse() {
-
-    }
 
     public static void viewStudents() {
+        System.out.println("All Students at Vanier: ");
         List<Student> list = new ArrayList<>(Student.getStudents().values());
         for (Student s : list) {
-            System.out.println(s);
+            System.out.println(s.getFirstName()+" "+s.getLastName()+" ("+s.getId()+")");
         }
     }
 
-    public void viewInstructors() {
+    public static void viewInstructors() {
+        System.out.println("All Teachers at Vanier: ");
         List<Instructor> list = new ArrayList<>(Instructor.getTeachers().values());
-        for (Instructor i : list) {
+        for (Instructor i : Instructor.getTeachers().values()) {
             System.out.println(i);
         }
     }
 
-    public void viewCourses() {
+    public static void viewCourses() {
         System.out.println("All avaiblable courses at Vanier:\n");
         List<Course> list = new ArrayList<>(Course.getCourses().values());
         for (Course c : list) {
@@ -93,10 +80,15 @@ public class Admin extends Account {
                     break;
                 case 6://view courses
                     viewCourses();
+                    UserInputManager.goBack();
                     break;
                 case 7://view students
+                    viewStudents();
+                    UserInputManager.goBack();
                     break;
                 case 8://view instructors
+                    viewInstructors();
+                    UserInputManager.goBack();
                     break;
                 case 9://logout
                     exitCondition = true;

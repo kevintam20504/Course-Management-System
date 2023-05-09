@@ -12,7 +12,6 @@ public class Student extends Account {
     public Student(String fName, String lName, int id, String password) {
         super(fName, lName, id, password);
         Student.database.put(id, password);
-        Student.students.put(id, this);
     }
 
     public ArrayList<Course> getCourses() {
@@ -40,9 +39,20 @@ public class Student extends Account {
     }
 
     public void viewCourses() {
+        System.out.println("All courses: ");
+        for (Course c : courses) {
+            System.out.println(c);
+        }
     }
 
-    public void viewclassFeedback(Course course) {
+    public void viewGrades() {
+        System.out.println("Grades: ");
+        for (Course c : courses) {
+            System.out.println(c.getName() + ": " + c.getGrades().get(this));
+        }
+    }
+
+    public void viewClassFeedback(Course course) {
 
     }
 
@@ -50,14 +60,22 @@ public class Student extends Account {
     public void performAction() {
         boolean exitCondition = false;
         while (!exitCondition) {
-            switch (UserInputManager.adminMenu()) {
+            switch (UserInputManager.studentMenu()) {
                 case 1://view courses
+                    viewCourses();
+                    UserInputManager.goBack();
                     break;
                 case 2://view grades
+                    viewGrades();
+                    UserInputManager.goBack();
                     break;
                 case 3://view class feedback
+                    
+                    UserInputManager.goBack();
                     break;
                 case 4://view individual feedback
+                    
+                    UserInputManager.goBack();
                     break;
                 case 5://logout
                     exitCondition = true;
@@ -71,7 +89,7 @@ public class Student extends Account {
 
     @Override
     public String toString() {
-        return "[" + this.id + "]" + this.lastName + " " + this.firstName;
+        return "[" + this.id + "] " + this.lastName + " " + this.firstName;
     }
 
 }

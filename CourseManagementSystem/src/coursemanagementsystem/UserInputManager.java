@@ -11,8 +11,9 @@ public class UserInputManager {
                          Welcome to Course Management System for Vanier
                          ---------------------------------------------
                          Please select one of the following options: 
-                         [1]Login
-                         [2]Quit
+                         [1]  Login
+                         [2]  Initialize or Change Password
+                         [3]  Quit
                          ---------------------------------------------
                          """);
         int userOption = sc.nextInt();
@@ -22,14 +23,15 @@ public class UserInputManager {
 
     public static Account login() {
         Scanner sc = new Scanner(System.in);
+        String password;
         System.out.print("""
                          ---------------------------------------------
                          Select one of the following options.
                          ---------------------------------------------
-                         [1]Student
-                         [2]Instructor
-                         [3]Admin
-                         [4]Back
+                         [1]  Student
+                         [2]  Instructor
+                         [3]  Admin
+                         [4]  Back
                          ---------------------------------------------
                          """);
         int userOption = sc.nextInt();
@@ -46,8 +48,16 @@ public class UserInputManager {
 
         System.out.println("Enter your ID:");
         int id = sc.nextInt();
-        System.out.println("Enter password");
-        String password = sc.next();
+        try {
+            System.out.println("Enter password");
+            password = sc.next();
+            if(Student.getDatabase().get(id)== null&&Instructor.getDatabase().get(id)==null&&Admin.getDatabase().get(id)==null)
+                throw new NullPointerException();
+            
+        } catch (NullPointerException e) {
+            System.out.println("You need to initialize your password.");
+            return null;
+        }
 
         switch (userOption) {
             case 1:
@@ -75,7 +85,8 @@ public class UserInputManager {
         // call login() again if user enters wrong combination
         return login();
     }
-/*
+
+    /*
     public static int displayActions(Account accountType) {
         if (accountType.getClass() == Student.class) {
             return studentMenu();
@@ -86,8 +97,7 @@ public class UserInputManager {
         }
         return 0;
     }
-*/
-
+     */
     public static int adminMenu() {
         Scanner sc = new Scanner(System.in);
         System.out.print("""
@@ -146,7 +156,7 @@ public class UserInputManager {
         int userOption = sc.nextInt();
         return userOption;
     }
-    
+
     public static String enterFeedback() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Enter message do you want to send: ");
@@ -183,8 +193,6 @@ public class UserInputManager {
             System.out.println("Cannot create this ID, try again: ");
             newId = sc.nextInt();
         }
-        System.out.println("Enter password: ");
-        String newPass = sc.next();
         System.out.println("Is this person:\n1. A student\n2. An instructor\nEnter: ");
         int choice = sc.nextInt();
         while (choice != 1 && choice != 2) {
@@ -193,17 +201,16 @@ public class UserInputManager {
         }
         // if account is student
         if (choice == 1) {
-            Student newStudent = new Student(fname, lname, newId, newPass);
-            Student.getDatabase().put(newId, newPass);
+            Student newStudent = new Student(fname, lname, newId, null);
+            Student.getDatabase().put(newId, null);
             Student.getStudents().put(newId, newStudent);
-            System.out.println("Account created!");
         } //if account is instructor
         else {
-            Instructor newInstructor = new Instructor(fname, lname, newId, newPass);
-            Instructor.getDatabase().put(newId, newPass);
+            Instructor newInstructor = new Instructor(fname, lname, newId, null);
+            Instructor.getDatabase().put(newId, null);
             Instructor.getTeachers().put(newId, newInstructor);
-            System.out.println("Account created!");
         }
+        System.out.println("Account created! User needs to create password");
 
     }
 
@@ -278,4 +285,53 @@ public class UserInputManager {
 
     }
 
+    public static void goBack() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("""
+                           ---------------------------------------------
+                           Enter "b" to go back: 
+                           """);
+        String choice = sc.next();
+        String back = "b";
+        while (!choice.equalsIgnoreCase(back)) {
+            System.out.println("Invalid, enter \"b\" to go back: ");
+            choice = sc.next();
+        }
+
+    }
+
+    public static void newPassword() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Enter your ID: ");
+        int inputId = sc.nextInt();
+        while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
+            System.out.println("That ID does not exist, try again: ");
+            inputId = sc.nextInt();
+        }
+        if (!Student.getDatabase().get(inputId).equals(null) || !Instructor.getDatabase().get(inputId).equals(null)) {
+            System.out.println("Update your password: ");
+            String newPassword = sc.next();
+            System.out.println("Password has been updated");
+            if (Student.getDatabase().keySet().contains(inputId)) {
+                Student.getDatabase().put(inputId, newPassword);
+                Student.getStudents().get(inputId).setPassword(newPassword);
+            } else {
+                Instructor.getDatabase().put(inputId, newPassword);
+                Instructor.getTeachers().get(inputId).setPassword(newPassword);
+            }
+
+        } else {
+            System.out.println("Create your password: ");
+            String newPassword = sc.next();
+            System.out.println("Account has been created");
+            if (Student.getDatabase().keySet().contains(inputId)) {
+                Student.getDatabase().put(inputId, newPassword);
+                Student.getStudents().get(inputId).setPassword(newPassword);
+            } else {
+                Instructor.getDatabase().put(inputId, newPassword);
+                Instructor.getTeachers().get(inputId).setPassword(newPassword);
+            }
+        }
+        System.out.println("Back to main menu");
+    }
 }

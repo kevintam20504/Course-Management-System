@@ -97,16 +97,22 @@ public class Course {
     }
 
     public void viewStudents() {
+        System.out.println("All Students in this class");
+        for(Student s: students){
+            System.out.println(s);
+        }
 
     }
 
     public void viewGrades() {
-
+        for(Student s: students){
+            System.out.println(s.getFirstName()+" "+s.getLastName()+": "+grades.get(Student.getStudents().get(s.getId())));
+        }
     }
 
     @Override
     public String toString() {
-        return name + " (" + courseId + ")" + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students";
+        return "["+this.courseId+"] "+ name + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students";
     }
 
 }

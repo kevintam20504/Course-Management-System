@@ -12,7 +12,6 @@ public class Instructor extends Account {
     public Instructor(String firstName, String lastName, int id, String password) {
         super(firstName, lastName, id, password);
         Instructor.database.put(id, password);
-        Instructor.teachers.put(id, this);
     }
 
     public ArrayList<Course> getCourses() {
@@ -66,6 +65,7 @@ public class Instructor extends Account {
             switch (UserInputManager.instructorMenu()) {
                 case 1://view courses
                     viewCourses();
+                    UserInputManager.goBack();
                     break;
                 case 2://submit grades
                     postGrade();
@@ -86,7 +86,7 @@ public class Instructor extends Account {
 
     @Override
     public String toString() {
-        return "[" + this.id + "]" + this.lastName + " " + this.firstName;
+        return "[" + this.id + "] " + this.lastName + " " + this.firstName;
     }
 
 }
