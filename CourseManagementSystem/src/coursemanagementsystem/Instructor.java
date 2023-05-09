@@ -61,25 +61,26 @@ public class Instructor extends Account {
 
     @Override
     public void performAction() {
-        switch (userOption) {
-            case 1://view courses
-                viewCourses();
-                performAction(UserInputManager.instructorMenu());
-                break;
-            case 2://submit grades
-                postGrade();
-                performAction(UserInputManager.instructorMenu());
-                break;
-            case 3://view students
-                performAction(UserInputManager.instructorMenu());
-                break;
-            case 4://class feedback
-                break;
-            case 5: //student feedback
-                break;
-            case 6:
-                //logout
-                break;
+        boolean exitCondition = false;
+        while (!exitCondition) {
+            switch (UserInputManager.instructorMenu()) {
+                case 1://view courses
+                    viewCourses();
+                    break;
+                case 2://submit grades
+                    postGrade();
+                    break;
+                case 3://view students
+                    break;
+                case 4://class feedback
+                    break;
+                case 5: //student feedback
+                    break;
+                case 6:
+                    //logout
+                    exitCondition = true;
+                    break;
+            }
         }
     }
 
