@@ -12,15 +12,15 @@ public class Driver {
         Admin adm = new Admin(9999, "pw");
         Course calculus = new Course(102, "Calculus I", i1);
         
-        Student.getStudents().put(s1.getId(), s1);
-        Student.getStudents().put(s2.getId(), s2);
-        Student.getStudents().put(s3.getId(), s3);
-        Student.getStudents().put(s4.getId(), s4);
-        Instructor.getTeachers().put(i1.getId(), i1);
-
-        //adding calculus to s1 and s2 Courses list
-        s1.getCourses().add(calculus);
-        s2.getCourses().add(calculus);
+//        Student.getStudents().put(s1.getId(), s1);
+//        Student.getStudents().put(s2.getId(), s2);
+//        Student.getStudents().put(s3.getId(), s3);
+//        Student.getStudents().put(s4.getId(), s4);
+//        Instructor.getTeachers().put(i1.getId(), i1);
+//
+//        //adding calculus to s1 and s2 Courses list
+//        s1.getCourses().add(calculus);
+//        s2.getCourses().add(calculus);
         
         //adding grades to check class average
         calculus.getGrades().put(s1, 60);
