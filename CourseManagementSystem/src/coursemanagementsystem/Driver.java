@@ -28,7 +28,7 @@ public class Driver {
                         break;
                     } else {
                         System.out.println("\nWelcome " + account.getFirstName()+" "+account.getLastName());
-                        UserInputManager.displayActions(account);
+                        account.performAction();
                         break;
                     }
 

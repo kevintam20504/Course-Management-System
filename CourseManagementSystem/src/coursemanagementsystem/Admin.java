@@ -68,37 +68,41 @@ public class Admin extends Account {
             System.out.println(c);
         }
     }
-    
+
     @Override
-    public static void performAction(int userOption) {
-        switch (userOption) {
-            case 1:
-                viewCourses();
-                Admin.performAction(UserInputManager.adminMenu());
-                break;
-            case 2:
-                UserInputManager.newCourse();
-                Admin.performAction(UserInputManager.adminMenu());
-                break;
-            case 3:
-                UserInputManager.deleteCourse();
-                Admin.performAction(UserInputManager.adminMenu());
-                break;
-            case 4:
-                UserInputManager.newAccount();
-                Admin.performAction(UserInputManager.adminMenu());
-                break;
-            case 5:
-                UserInputManager.deleteAccount();
-                Admin.performAction(UserInputManager.adminMenu());
-                break;
-            case 6:
-                UserInputManager.assignCourse();
-                Admin.performAction(UserInputManager.adminMenu());
-                break;
-            case 7:
-            //logout
-                break;
+    public void performAction() {
+        boolean exitCondition = false;
+        while (!exitCondition) {
+            switch (UserInputManager.adminMenu()) {
+                case 1://create course
+                    UserInputManager.newCourse();
+                    break;
+                case 2://delete course
+                    UserInputManager.deleteCourse();
+                    break;
+                case 3://create account
+                    UserInputManager.newAccount();
+                    break;
+                case 4://delete account
+                    UserInputManager.deleteAccount();
+                    break;
+                case 5://assign course to student
+                    UserInputManager.assignCourse();
+                    break;
+                case 6://view courses
+                    viewCourses();
+                    break;
+                case 7://view students
+                    break;
+                case 8://view instructors
+                    break;
+                case 9://logout
+                    exitCondition = true;
+                    break;
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    break;
+            }
         }
 
     }
