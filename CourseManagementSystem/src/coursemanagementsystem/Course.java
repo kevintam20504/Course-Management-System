@@ -12,8 +12,6 @@ public class Course {
     private static HashMap<Integer, Course> courses = new HashMap<>();
     private HashMap<Student, Integer> grades = new HashMap<>();
     private ArrayList<String> classFeedback = new ArrayList<>();
-    private ArrayList<String> feedbackList = new ArrayList<>();
-    private HashMap<Student, ArrayList<String>> studentFeedback = new HashMap<>();
     private static final int MAX_STUDENTS = 30;
     private static final int MAX_TEACHERS = 1;
 
@@ -79,22 +77,6 @@ public class Course {
 
     public void setClassFeedback(ArrayList<String> classFeedback) {
         this.classFeedback = classFeedback;
-    }
-
-    public ArrayList<String> getFeedback() {
-        return feedbackList;
-    }
-
-    public void setFeedback(ArrayList<String> feedback) {
-        this.feedbackList = feedback;
-    }
-
-    public HashMap<Student, ArrayList<String>> getStudentFeedback() {
-        return studentFeedback;
-    }
-
-    public void setStudentFeedback(HashMap<Student, ArrayList<String>> studentFeedback) {
-        this.studentFeedback = studentFeedback;
     }
 
     public static int getMAX_STUDENTS() {

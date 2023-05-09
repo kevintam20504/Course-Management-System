@@ -106,10 +106,9 @@ public class Instructor extends Account {
             student = UserInputManager.getStudent();
         }
         String feedback = UserInputManager.enterFeedback();
-        ArrayList<String> feedbackList = course.getFeedback();
+        ArrayList<String> feedbackList = student.getFeedbackList();
         feedbackList.add(feedback);
-        course.getStudentFeedback().put(student, feedbackList);
-
+        student.getStudentFeedback().put(course, feedbackList);
     }
 
     @Override
