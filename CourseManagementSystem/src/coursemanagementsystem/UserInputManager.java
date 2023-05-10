@@ -262,7 +262,6 @@ public class UserInputManager {
                 }
                 Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
                 Course newCourse = new Course(newCourseId, newCourseName, instructor);
-                instructor.getCourses().add(newCourse);
                 System.out.println(newCourseName + " has been created");
 
             } catch (Exception e) {

@@ -8,8 +8,6 @@ public class Student extends Account {
     private ArrayList<Course> courses = new ArrayList<>();
     private static HashMap<Integer, Student> students = new HashMap<>();
     private static HashMap<Integer, String> database = new HashMap<>();
-    private ArrayList<String> feedbackList = new ArrayList<>();
-    private HashMap<Course, ArrayList<String>> studentFeedback = new HashMap<>();
 
     public Student(String fName, String lName, int id, String password) {
         super(fName, lName, id, password);
@@ -41,22 +39,6 @@ public class Student extends Account {
         Student.database = database;
     }
 
-    public ArrayList<String> getFeedbackList() {
-        return feedbackList;
-    }
-
-    public void setFeedbackList(ArrayList<String> feedbackList) {
-        this.feedbackList = feedbackList;
-    }
-
-    public HashMap<Course, ArrayList<String>> getStudentFeedback() {
-        return studentFeedback;
-    }
-
-    public void setStudentFeedback(HashMap<Course, ArrayList<String>> studentFeedback) {
-        this.studentFeedback = studentFeedback;
-    }
-
     public void viewCourses() {
         System.out.println("All courses: ");
         for (Course c : courses) {
@@ -74,25 +56,37 @@ public class Student extends Account {
     public void viewClassFeedback() {
         Course course = UserInputManager.getCourse();
 
-        while (!this.courses.contains(course)) {
+        if (this.courses.contains(course)) {
+            System.out.println("Class feedback for " + course.getName() + ": ");
+            ArrayList<String> feedbackList = course.getClassFeedback();
+            for (String feedback : feedbackList) {
+                System.out.println(feedback);
+            }
+        } else {
             System.out.println("This student is not in this course.");
         }
-        System.out.println("Class feedback for " + course.getName() + ": ");
-        for (String feedback : course.getClassFeedback()) {
-            System.out.println(feedback);
-        }
+
     }
 
     public void viewFeedback() {
         Course course = UserInputManager.getCourse();
 
-        while (!this.courses.contains(course)) {
+        if (this.courses.contains(course)) {
+            System.out.println("Individual feedback for " + course.getName() + ": ");
+            if (course.getStudentFeedback().get(course) == null) {
+                course.getStudentFeedback().put(course, new HashMap<>());
+            }
+            if (course.getStudentFeedback().get(course).get(this) == null) {
+                course.getStudentFeedback().get(course).put(this, new ArrayList<>());
+            }
+            ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
+            for (String feedback : feedbackList) {
+                System.out.println(feedback);
+            }
+        }else{
             System.out.println("This student is not in this course.");
         }
-        System.out.println("Individual feedback for " + course.getName() + ": ");
-        for (String feedback : this.getStudentFeedback().get(course)) {
-            System.out.println(feedback);
-        }
+
     }
 
     @Override
