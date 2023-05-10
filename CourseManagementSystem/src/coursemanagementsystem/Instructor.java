@@ -40,9 +40,9 @@ public class Instructor extends Account {
     }
 
     public void viewCourses() {
-        System.out.println("All courses taught:\n ");
-        for (Course course : courses) {
-            System.out.print("\n" + courses + ", Average: ");
+        System.out.println("All courses taught: ");
+        for (Course course : this.courses) {
+            System.out.print("\n" + course + ", Average: ");
             course.getGrades().values().stream().mapToInt(n -> n).average().ifPresent(System.out::print);
             System.out.println("");
         }
@@ -73,6 +73,7 @@ public class Instructor extends Account {
             System.out.println("This teacher does not teach this course.");
             course = UserInputManager.getCourse();
         }
+        System.out.println("All students in " + course.getName() + ": ");
         for (Student s : course.getStudents()) {
             System.out.println(s);
         }
@@ -106,9 +107,13 @@ public class Instructor extends Account {
             student = UserInputManager.getStudent();
         }
         String feedback = UserInputManager.enterFeedback();
-        ArrayList<String> feedbackList = student.getFeedbackList();
-        feedbackList.add(feedback);
-        student.getStudentFeedback().put(course, feedbackList);
+        if (course.getStudentFeedback().get(course) == null) {
+            course.getStudentFeedback().put(course, new HashMap<>());
+        }
+        if (course.getStudentFeedback().get(course).get(student) == null) {
+            course.getStudentFeedback().get(course).put(student, new ArrayList<>());
+        }
+        course.getStudentFeedback().get(course).get(student).add(feedback);
     }
 
     @Override

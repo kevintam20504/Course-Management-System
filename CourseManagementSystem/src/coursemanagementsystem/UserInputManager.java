@@ -167,19 +167,22 @@ public class UserInputManager {
 
     public static void deleteAccount() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the ID of the account you want to delete: ");
+        System.out.println("Enter the ID of the account you want to delete (Enter \"-1\" to go back): ");
         int inputID = sc.nextInt();
         if (Student.getDatabase().containsKey(inputID)) {
             Student.getDatabase().remove(inputID);
             Student.getStudents().remove(inputID);
+            System.out.println("Account deleted");
         } else if (Instructor.getDatabase().containsKey(inputID)) {
             Instructor.getDatabase().remove(inputID);
             Instructor.getTeachers().remove(inputID);
-        } else {
+            System.out.println("Account deleted");
+        }else if(inputID == -1 ){
+            System.out.println("Going back to main menu.");
+        }else {
             System.out.println("Cannot delete this user, try again");
             deleteAccount();
         }
-        System.out.println("Account deleted");
     }
 
     public static void newAccount() {
@@ -262,7 +265,6 @@ public class UserInputManager {
                 }
                 Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
                 Course newCourse = new Course(newCourseId, newCourseName, instructor);
-                instructor.getCourses().add(newCourse);
                 System.out.println(newCourseName + " has been created");
 
             } catch (Exception e) {
