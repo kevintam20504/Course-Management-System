@@ -39,13 +39,23 @@ public class Instructor extends Account {
         Instructor.database = database;
     }
 
-    public void viewCourses() {
+    public boolean viewCourses() {
         System.out.println("All courses taught: ");
-        for (Course course : this.courses) {
-            System.out.print("\n" + course + ", Average: ");
-            course.getGrades().values().stream().mapToInt(n -> n).average().ifPresent(System.out::print);
-            System.out.println("");
+        if (!this.courses.isEmpty()) {
+            ArrayList<String> list = new ArrayList<>();
+            for (Course course : this.courses) {
+                double avgGrade = course.getGrades().values().stream().mapToInt(n -> n).average().stream().reduce(0, (a, b) -> a + b);
+                list.add(course.toString() + " Average: " + avgGrade);
+                System.out.println(course.toString() + " Average: " + avgGrade);
+            }
+
+            UserInputManager.printList("Courses taught by " + this.firstName + " " + this.lastName, list);
+            return true;
+        } else {
+            System.out.println("You are not teaching any courses.");
+            return false;
         }
+
     }
 
     public void postGrade() {
@@ -98,6 +108,7 @@ public class Instructor extends Account {
             for (Student s : course.getStudents()) {
                 System.out.println(s);
             }
+            UserInputManager.printList("All students in " + course.getName(), course.getStudents());
             return true;
         } else {
             return false;
@@ -144,7 +155,7 @@ public class Instructor extends Account {
                     course.getStudentFeedback().get(course).put(student, new ArrayList<>());
                 }
                 course.getStudentFeedback().get(course).get(student).add(feedback);
-                System.out.println("Feedback has been sent to "+student.getFirstName());
+                System.out.println("Feedback has been sent to " + student.getFirstName());
             }
         }
 
@@ -156,15 +167,17 @@ public class Instructor extends Account {
         while (!exitCondition) {
             switch (UserInputManager.instructorMenu()) {
                 case 1://view courses
-                    viewCourses();
-                    UserInputManager.goBack();
+                    boolean viewedCourses = viewCourses();
+                    if (viewedCourses == true) {
+                        UserInputManager.goBack();
+                    }
                     break;
                 case 2://submit grades
                     postGrade();
                     break;
                 case 3://view students in a course
-                    boolean viewed = viewStudents();
-                    if (viewed == true) {
+                    boolean viewedStudents = viewStudents();
+                    if (viewedStudents == true) {
                         UserInputManager.goBack();
                     }
                     break;

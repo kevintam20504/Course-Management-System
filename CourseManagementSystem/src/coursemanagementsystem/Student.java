@@ -39,17 +39,33 @@ public class Student extends Account {
         Student.database = database;
     }
 
-    public void viewCourses() {
+    public boolean viewCourses() {
         System.out.println("All courses: ");
-        for (Course c : courses) {
-            System.out.println(c);
+        if (!this.courses.isEmpty()) {
+            for (Course c : this.courses) {
+                System.out.println(c);
+            }
+            UserInputManager.printList("All courses of " + this.firstName + " " + this.lastName, courses);
+            return true;
+        } else {
+            System.out.println("You are not in any course.");
+            return false;
         }
     }
 
-    public void viewGrades() {
+    public boolean viewGrades() {
         System.out.println("Grades: ");
-        for (Course c : courses) {
-            System.out.println(c.getName() + ": " + c.getGrades().get(this));
+        if (!this.courses.isEmpty()) {
+            ArrayList<String> list = new ArrayList<>();
+            for (Course c : this.courses) {
+                list.add(c.getName() + ": " + c.getGrades().get(this));
+                System.out.println(c.getName() + ": " + c.getGrades().get(this));
+            }
+            UserInputManager.printList("Grades of " + this.firstName + " " + this.lastName, list);
+            return true;
+        } else {
+            System.out.println("You are not in any course.");
+            return false;
         }
     }
 
@@ -67,8 +83,9 @@ public class Student extends Account {
                 System.out.println("This student is not in this course.");
                 return false;
             }
-        }else
+        } else {
             return false;
+        }
 
     }
 
@@ -104,12 +121,16 @@ public class Student extends Account {
         while (!exitCondition) {
             switch (UserInputManager.studentMenu()) {
                 case 1://view courses
-                    viewCourses();
-                    UserInputManager.goBack();
+                    boolean viewedCourses = viewCourses();
+                    if (viewedCourses == true) {
+                        UserInputManager.goBack();
+                    }
                     break;
                 case 2://view grades
-                    viewGrades();
-                    UserInputManager.goBack();
+                    boolean viewedGrades = viewGrades();
+                    if (viewedGrades == true) {
+                        UserInputManager.goBack();
+                    }
                     break;
                 case 3://view class feedback
                     boolean viewedClassFeedback = viewClassFeedback();

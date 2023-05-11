@@ -2,7 +2,6 @@ package coursemanagementsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Admin extends Account {
 
@@ -36,26 +35,29 @@ public class Admin extends Account {
 
     public static void viewStudents() {
         System.out.println("All Students at Vanier: ");
-        List<Student> list = new ArrayList<>(Student.getStudents().values());
+        ArrayList<Student> list = new ArrayList<>(Student.getStudents().values());
         for (Student s : list) {
             System.out.println(s.getFirstName()+" "+s.getLastName()+" ("+s.getId()+")");
         }
+        UserInputManager.printList("All Students at Vanier:", list);
     }
 
     public static void viewInstructors() {
         System.out.println("All Teachers at Vanier: ");
-        List<Instructor> list = new ArrayList<>(Instructor.getTeachers().values());
+        ArrayList<Instructor> list = new ArrayList<>(Instructor.getTeachers().values());
         for (Instructor i : Instructor.getTeachers().values()) {
             System.out.println(i);
         }
+        UserInputManager.printList("All Teachers at Vanier:", list);
     }
 
     public static void viewCourses() {
-        System.out.println("All avaiblable courses at Vanier:\n");
-        List<Course> list = new ArrayList<>(Course.getCourses().values());
+        System.out.println("All available courses at Vanier:\n");
+        ArrayList<Course> list = new ArrayList<>(Course.getCourses().values());
         for (Course c : list) {
             System.out.println(c);
         }
+        UserInputManager.printList("All available courses at Vanier:", list);
     }
 
     @Override

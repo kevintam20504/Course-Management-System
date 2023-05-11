@@ -1,5 +1,6 @@
 package coursemanagementsystem;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInputManager {
@@ -476,9 +477,26 @@ public class UserInputManager {
             System.out.println("Please enter a number between 0 and 100 (Enter \"-1\" to go back to main menu):");
             grade = sc.nextInt();
         }
-        if(grade ==-1)
+        if (grade == -1) {
             System.out.println("Going back to main menu.");
+        }
         return grade;
+    }
+
+    public static <E> boolean printList(String title, ArrayList<E> arr) {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("\nWould you like to print this list in a txt file?(Y/N)");
+        String choice = sc.next();
+
+        while (!(choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes") || choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no"))) {
+            System.out.println("Invalid input. Please try again.");
+            choice = sc.next();
+        }
+        if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
+            PrintList.printList(title, arr);
+            return true;
+        }
+        return false;
     }
 
 }

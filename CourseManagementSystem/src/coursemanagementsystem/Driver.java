@@ -12,6 +12,7 @@ public class Driver {
         Admin adm = new Admin(9999, "pw");
         Course calculus = new Course(102, "Calculus I", i1);
         Course calculus2 = new Course(103, "Calculus II", i2);
+        Course english = new Course(104, "English", i1);
 
         //ading courses to student's course list and adding students to course's student list
         s1.getCourses().add(calculus);
