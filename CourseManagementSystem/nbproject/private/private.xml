@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>src/coursemanagementsystem/Instructor.java</url>
+            <bookmark id="1">
+                <name/>
+                <line>112</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/Users/andyhou/School/prog/Data%20Structures/Course-Management-System/CourseManagementSystem/src/coursemanagementsystem/Admin.java</file>
             <file>file:/Users/andyhou/School/prog/Data%20Structures/Course-Management-System/CourseManagementSystem/src/coursemanagementsystem/UserInputManager.java</file>
             <file>file:/Users/andyhou/School/prog/Data%20Structures/Course-Management-System/CourseManagementSystem/src/coursemanagementsystem/Driver.java</file>
-            <file>file:/Users/andyhou/School/prog/Data%20Structures/Course-Management-System/CourseManagementSystem/src/coursemanagementsystem/Course.java</file>
-            <file>file:/Users/andyhou/School/prog/Data%20Structures/Course-Management-System/CourseManagementSystem/src/coursemanagementsystem/Instructor.java</file>
         </group>
     </open-files>
 </project-private>

@@ -3,7 +3,6 @@ package coursemanagementsystem;
 public class Driver {
 
     public static void main(String[] args) {
-        System.out.println(Admin.getAdmin().get(9999));
         Student s1 = new Student("Student", "1", 1, "password1");
         Student s2 = new Student("Student", "2", 2, "password2");
         Student s3 = new Student("Student", "3", 3, "password3");

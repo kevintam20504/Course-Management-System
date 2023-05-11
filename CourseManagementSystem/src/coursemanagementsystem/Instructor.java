@@ -50,70 +50,104 @@ public class Instructor extends Account {
 
     public void postGrade() {
         Course course = UserInputManager.getCourse();
-
-        while (!this.courses.contains(course)) {//checks if teacher teaches this course
-            System.out.println("This teacher does not teach this course.");
-            course = UserInputManager.getCourse();
+        boolean exit = false;
+        if (course != null) {
+            while (!this.courses.contains(course)) {//checks if teacher teaches this course
+                System.out.println("This teacher does not teach this course.");
+                course = UserInputManager.getCourse();
+                if (course == null) {
+                    exit = true;
+                    break;
+                }
+            }
+            if (exit == false) {
+                Student student = UserInputManager.getStudent();
+                if (student != null) {
+                    while (!course.getStudents().contains(student)) {//checks if student is in this course
+                        System.out.println("This student is not in this course.");
+                        student = UserInputManager.getStudent();
+                        if (student == null) {
+                            exit = true;
+                            break;
+                        }
+                    }
+                    if (exit == false) {
+                        int grade = UserInputManager.getGrade();
+                        if (grade == -1) {
+                            exit = true;
+                        }
+                        if (exit == false) {
+                            course.getGrades().put(student, grade);
+                            System.out.println("Posted grade for " + student.firstName + " in " + course.getName() + ".");
+                        }
+                    }
+                }
+            }
         }
-        Student student = UserInputManager.getStudent();
-
-        while (!course.getStudents().contains(student)) {//checks if student is in this course
-            System.out.println("This student is not in this course.");
-            student = UserInputManager.getStudent();
-        }
-        int grade = UserInputManager.getGrade();
-        course.getGrades().put(student, grade);
-        System.out.println("Posted grade for " + student.firstName + " in " + course.getName() + ".");
-
     }
 
-    public void viewStudents() {
+    public boolean viewStudents() {
         Course course = UserInputManager.getCourse();
-        while (!this.courses.contains(course)) {//checks if teacher teaches this course
+        while (!this.courses.contains(course) && course != null) {//checks if teacher teaches this course
             System.out.println("This teacher does not teach this course.");
             course = UserInputManager.getCourse();
         }
-        System.out.println("All students in " + course.getName() + ": ");
-        for (Student s : course.getStudents()) {
-            System.out.println(s);
+
+        if (course != null) {
+            System.out.println("All students in " + course.getName() + ": ");
+            for (Student s : course.getStudents()) {
+                System.out.println(s);
+            }
+            return true;
+        } else {
+            return false;
         }
 
     }
 
     public void postClassFeedBack() {
         Course course = UserInputManager.getCourse();
-        while (!this.courses.contains(course)) {//checks if teacher teaches this course
-            System.out.println("This teacher does not teach this course.");
-            course = UserInputManager.getCourse();
-        }
-        String feedback = UserInputManager.enterFeedback();
-        
-        course.getClassFeedback().add(feedback);
-        System.out.println("Posted class feedback to " + course.getName() + ".");
+        if (course != null) {
+            while (!this.courses.contains(course) && course != null) {//checks if teacher teaches this course
+                System.out.println("This teacher does not teach this course.");
+                course = UserInputManager.getCourse();
+            }
+            if (course != null) {
 
+                String feedback = UserInputManager.enterFeedback();
+
+                course.getClassFeedback().add(feedback);
+                System.out.println("Posted class feedback to " + course.getName() + ".");
+            }
+
+        }
     }
 
     public void postStudentFeedBack() {
         Course course = UserInputManager.getCourse();
-
-        while (!this.courses.contains(course)) {//checks if teacher teaches this course
+        while (!this.courses.contains(course) && course != null) {//checks if teacher teaches this course
             System.out.println("This teacher does not teach this course.");
             course = UserInputManager.getCourse();
         }
-        Student student = UserInputManager.getStudent();
+        if (course != null) {
+            Student student = UserInputManager.getStudent();
+            while (!course.getStudents().contains(student) && student != null) {
+                System.out.println("This student is not in this course.");
+                student = UserInputManager.getStudent();
+            }
+            if (student != null) {
+                String feedback = UserInputManager.enterFeedback();
+                if (course.getStudentFeedback().get(course) == null) {
+                    course.getStudentFeedback().put(course, new HashMap<>());
+                }
+                if (course.getStudentFeedback().get(course).get(student) == null) {
+                    course.getStudentFeedback().get(course).put(student, new ArrayList<>());
+                }
+                course.getStudentFeedback().get(course).get(student).add(feedback);
+                System.out.println("Feedback has been sent to "+student.getFirstName());
+            }
+        }
 
-        while (!course.getStudents().contains(student)) {
-            System.out.println("This student is not in this course.");
-            student = UserInputManager.getStudent();
-        }
-        String feedback = UserInputManager.enterFeedback();
-        if (course.getStudentFeedback().get(course) == null) {
-            course.getStudentFeedback().put(course, new HashMap<>());
-        }
-        if (course.getStudentFeedback().get(course).get(student) == null) {
-            course.getStudentFeedback().get(course).put(student, new ArrayList<>());
-        }
-        course.getStudentFeedback().get(course).get(student).add(feedback);
     }
 
     @Override
@@ -129,8 +163,10 @@ public class Instructor extends Account {
                     postGrade();
                     break;
                 case 3://view students in a course
-                    viewStudents();
-                    UserInputManager.goBack();
+                    boolean viewed = viewStudents();
+                    if (viewed == true) {
+                        UserInputManager.goBack();
+                    }
                     break;
                 case 4://class feedback
                     postClassFeedBack();

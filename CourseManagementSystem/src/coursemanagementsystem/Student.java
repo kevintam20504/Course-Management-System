@@ -53,38 +53,47 @@ public class Student extends Account {
         }
     }
 
-    public void viewClassFeedback() {
+    public boolean viewClassFeedback() {
         Course course = UserInputManager.getCourse();
-
-        if (this.courses.contains(course)) {
-            System.out.println("Class feedback for " + course.getName() + ": ");
-            ArrayList<String> feedbackList = course.getClassFeedback();
-            for (String feedback : feedbackList) {
-                System.out.println(feedback);
+        if (course != null) {
+            if (this.courses.contains(course)) {
+                System.out.println("Class feedback for " + course.getName() + ": ");
+                ArrayList<String> feedbackList = course.getClassFeedback();
+                for (String feedback : feedbackList) {
+                    System.out.println(feedback);
+                }
+                return true;
+            } else {
+                System.out.println("This student is not in this course.");
+                return false;
             }
-        } else {
-            System.out.println("This student is not in this course.");
-        }
+        }else
+            return false;
 
     }
 
-    public void viewFeedback() {
+    public boolean viewFeedback() {
         Course course = UserInputManager.getCourse();
-
-        if (this.courses.contains(course)) {
-            System.out.println("Individual feedback for " + course.getName() + ": ");
-            if (course.getStudentFeedback().get(course) == null) {
-                course.getStudentFeedback().put(course, new HashMap<>());
+        if (course != null) {
+            if (this.courses.contains(course)) {
+                System.out.println("Individual feedback for " + course.getName() + ": ");
+                if (course.getStudentFeedback().get(course) == null) {
+                    course.getStudentFeedback().put(course, new HashMap<>());
+                }
+                if (course.getStudentFeedback().get(course).get(this) == null) {
+                    course.getStudentFeedback().get(course).put(this, new ArrayList<>());
+                }
+                ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
+                for (String feedback : feedbackList) {
+                    System.out.println(feedback);
+                }
+                return true;
+            } else {
+                System.out.println("This student is not in this course.");
+                return false;
             }
-            if (course.getStudentFeedback().get(course).get(this) == null) {
-                course.getStudentFeedback().get(course).put(this, new ArrayList<>());
-            }
-            ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
-            for (String feedback : feedbackList) {
-                System.out.println(feedback);
-            }
-        }else{
-            System.out.println("This student is not in this course.");
+        } else {
+            return false;
         }
 
     }
@@ -103,12 +112,16 @@ public class Student extends Account {
                     UserInputManager.goBack();
                     break;
                 case 3://view class feedback
-                    viewClassFeedback();
-                    UserInputManager.goBack();
+                    boolean viewedClassFeedback = viewClassFeedback();
+                    if (viewedClassFeedback == true) {
+                        UserInputManager.goBack();
+                    }
                     break;
                 case 4://view individual feedback
-                    viewFeedback();
-                    UserInputManager.goBack();
+                    boolean viewedFeedback = viewFeedback();
+                    if (viewedFeedback == true) {
+                        UserInputManager.goBack();
+                    }
                     break;
                 case 5://logout
                     exitCondition = true;
