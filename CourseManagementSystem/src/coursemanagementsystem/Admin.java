@@ -32,14 +32,13 @@ public class Admin extends Account {
         Admin.admin = admin;
     }
 
-
     public static void viewStudents() {
         System.out.println("All Students at Vanier: ");
         ArrayList<Student> list = new ArrayList<>(Student.getStudents().values());
         for (Student s : list) {
-            System.out.println(s.getFirstName()+" "+s.getLastName()+" ("+s.getId()+")");
+            System.out.println(s.getFirstName() + " " + s.getLastName() + " (" + s.getId() + ")");
         }
-        UserInputManager.printList("All Students at Vanier:", list);
+        UserInputManager.printList("All Students at Vanier", list);
     }
 
     public static void viewInstructors() {
@@ -48,7 +47,7 @@ public class Admin extends Account {
         for (Instructor i : Instructor.getTeachers().values()) {
             System.out.println(i);
         }
-        UserInputManager.printList("All Teachers at Vanier:", list);
+        UserInputManager.printList("All Teachers at Vanier", list);
     }
 
     public static void viewCourses() {
@@ -57,7 +56,7 @@ public class Admin extends Account {
         for (Course c : list) {
             System.out.println(c);
         }
-        UserInputManager.printList("All available courses at Vanier:", list);
+        UserInputManager.printList("All Courses at Vanier", list);
     }
 
     @Override
