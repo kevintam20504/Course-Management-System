@@ -2,6 +2,7 @@ package coursemanagementsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Instructor extends Account {
 
@@ -42,8 +43,7 @@ public class Instructor extends Account {
     public void viewCourses() {
         System.out.println("All courses taught: ");
         for (Course course : this.courses) {
-            System.out.print("\n" + course + ", Average: ");
-            course.getGrades().values().stream().mapToInt(n -> n).average().ifPresent(System.out::print);
+            System.out.print("\n" + course);
             System.out.println("");
         }
     }
@@ -86,7 +86,7 @@ public class Instructor extends Account {
         }
     }
 
-    public boolean viewStudents() {
+    public ArrayList<Student> viewStudents() {
         Course course = UserInputManager.getCourse();
         while (!this.courses.contains(course) && course != null) {//checks if teacher teaches this course
             System.out.println("This teacher does not teach this course.");
@@ -98,9 +98,9 @@ public class Instructor extends Account {
             for (Student s : course.getStudents()) {
                 System.out.println(s);
             }
-            return true;
+            return course.getStudents();
         } else {
-            return false;
+            return null;
         }
 
     }
@@ -144,7 +144,7 @@ public class Instructor extends Account {
                     course.getStudentFeedback().get(course).put(student, new ArrayList<>());
                 }
                 course.getStudentFeedback().get(course).get(student).add(feedback);
-                System.out.println("Feedback has been sent to "+student.getFirstName());
+                System.out.println("Feedback has been sent to " + student.getFirstName());
             }
         }
 
@@ -153,19 +153,34 @@ public class Instructor extends Account {
     @Override
     public void performAction() {
         boolean exitCondition = false;
+        String letterChoice;
+        boolean back = false;
         while (!exitCondition) {
             switch (UserInputManager.instructorMenu()) {
                 case 1://view courses
                     viewCourses();
-                    UserInputManager.goBack();
+                    letterChoice = UserInputManager.goBack_Sort_orPrint();
+                    if (letterChoice.equalsIgnoreCase("s")) {
+                        UserInputManager.sortCourses(this.courses);
+                    } else if (letterChoice.equalsIgnoreCase("p")) {
+                        //prints
+                        System.out.println("print...");
+                    }
+                    System.out.println("Going back to main menu.");
                     break;
                 case 2://submit grades
                     postGrade();
                     break;
                 case 3://view students in a course
-                    boolean viewed = viewStudents();
-                    if (viewed == true) {
-                        UserInputManager.goBack();
+                    List<Student> students = viewStudents();
+                    if (students != null) {
+                        letterChoice = UserInputManager.goBack_Sort_orPrint();
+                        if (letterChoice.equalsIgnoreCase("s")) {
+                            UserInputManager.sortStudents(students);
+                        } else if (letterChoice.equalsIgnoreCase("p")) {
+                            //prints
+                            System.out.println("print...");
+                        }
                     }
                     break;
                 case 4://class feedback
