@@ -38,7 +38,7 @@ public class Admin extends Account {
         for (Student s : list) {
             System.out.println(s.getFirstName() + " " + s.getLastName() + " (" + s.getId() + ")");
         }
-        UserInputManager.printList("All Students at Vanier", list);
+        PrintList.printTxt("All Students at Vanier", list);
     }
 
     public static void viewInstructors() {
@@ -47,7 +47,7 @@ public class Admin extends Account {
         for (Instructor i : Instructor.getTeachers().values()) {
             System.out.println(i);
         }
-        UserInputManager.printList("All Teachers at Vanier", list);
+        PrintList.printTxt("All Teachers at Vanier", list);
     }
 
     public static void viewCourses() {
@@ -56,7 +56,7 @@ public class Admin extends Account {
         for (Course c : list) {
             System.out.println(c);
         }
-        UserInputManager.printList("All Courses at Vanier", list);
+        PrintList.printTxt("All Courses at Vanier", list);
     }
 
     @Override

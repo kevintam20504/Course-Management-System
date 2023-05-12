@@ -39,7 +39,7 @@ public class Instructor extends Account {
         Instructor.database = database;
     }
 
-    public boolean viewCourses() {
+    public void viewCourses() {
         System.out.println("All courses taught: ");
         if (!this.courses.isEmpty()) {
             ArrayList<String> list = new ArrayList<>();
@@ -48,12 +48,22 @@ public class Instructor extends Account {
                 list.add(course.toString() + " Average: " + avgGrade);
                 System.out.println(course.toString() + " Average: " + avgGrade);
             }
-
-            UserInputManager.printList("Courses taught by " + this.firstName + " " + this.lastName, list);
-            return true;
+            
+            while(true){
+                String choice = UserInputManager.listOptions();
+                if (choice.equals("s")) {
+                    System.out.println("do sorting stuff here");
+                }
+                else if (choice.equals("p")) {
+                    PrintList.printTxt("All courses taught by " + this.firstName + " " + this.lastName, list);
+                }
+                else{
+                    break;
+                }
+            }
+            
         } else {
             System.out.println("You are not teaching any courses.");
-            return false;
         }
 
     }
@@ -96,22 +106,34 @@ public class Instructor extends Account {
         }
     }
 
-    public boolean viewStudents() {
+    public void viewStudents() {
         Course course = UserInputManager.getCourse();
         while (!this.courses.contains(course) && course != null) {//checks if teacher teaches this course
             System.out.println("This teacher does not teach this course.");
             course = UserInputManager.getCourse();
         }
 
-        if (course != null) {
+        if (course != null && !course.getStudents().isEmpty()) {
             System.out.println("All students in " + course.getName() + ": ");
             for (Student s : course.getStudents()) {
                 System.out.println(s);
             }
-            UserInputManager.printList("All students in " + course.getName(), course.getStudents());
-            return true;
-        } else {
-            return false;
+            
+            while(true){
+                String choice = UserInputManager.listOptions();
+                if (choice.equals("s")) {
+                    System.out.println("do sorting stuff here");
+                }
+                else if (choice.equals("p")) {
+                    PrintList.printTxt("All students in " + course.getName(), course.getStudents());
+                }
+                else{
+                    break;
+                }
+            }
+            
+        }else{
+            System.out.println("This course has no students.");
         }
 
     }
@@ -167,19 +189,13 @@ public class Instructor extends Account {
         while (!exitCondition) {
             switch (UserInputManager.instructorMenu()) {
                 case 1://view courses
-                    boolean viewedCourses = viewCourses();
-                    if (viewedCourses == true) {
-                        UserInputManager.goBack();
-                    }
+                    viewCourses();
                     break;
                 case 2://submit grades
                     postGrade();
                     break;
                 case 3://view students in a course
-                    boolean viewedStudents = viewStudents();
-                    if (viewedStudents == true) {
-                        UserInputManager.goBack();
-                    }
+                    viewStudents();
                     break;
                 case 4://class feedback
                     postClassFeedBack();

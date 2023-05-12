@@ -39,21 +39,29 @@ public class Student extends Account {
         Student.database = database;
     }
 
-    public boolean viewCourses() {
+    public void viewCourses() {
         System.out.println("All courses: ");
         if (!this.courses.isEmpty()) {
             for (Course c : this.courses) {
                 System.out.println(c);
             }
-            UserInputManager.printList("All courses of " + this.firstName + " " + this.lastName, courses);
-            return true;
+            while (true) {
+                String choice = UserInputManager.listOptions();
+                if (choice.equals("s")) {
+                    System.out.println("do sorting stuff here");
+                } else if (choice.equals("p")) {
+                    PrintList.printTxt("All courses of " + this.firstName + " " + this.lastName, courses);
+                } else {
+                    break;
+                }
+            }
+
         } else {
             System.out.println("You are not in any course.");
-            return false;
         }
     }
 
-    public boolean viewGrades() {
+    public void viewGrades() {
         System.out.println("Grades: ");
         if (!this.courses.isEmpty()) {
             ArrayList<String> list = new ArrayList<>();
@@ -61,11 +69,20 @@ public class Student extends Account {
                 list.add(c.getName() + ": " + c.getGrades().get(this));
                 System.out.println(c.getName() + ": " + c.getGrades().get(this));
             }
-            UserInputManager.printList("Grades of " + this.firstName + " " + this.lastName, list);
-            return true;
+
+            while (true) {
+                String choice = UserInputManager.listOptions();
+                if (choice.equals("s")) {
+                    System.out.println("do sorting stuff here");
+                } else if (choice.equals("p")) {
+                    PrintList.printTxt("Grades of " + this.firstName + " " + this.lastName, list);
+                } else {
+                    break;
+                }
+            }
+
         } else {
             System.out.println("You are not in any course.");
-            return false;
         }
     }
 
@@ -121,16 +138,10 @@ public class Student extends Account {
         while (!exitCondition) {
             switch (UserInputManager.studentMenu()) {
                 case 1://view courses
-                    boolean viewedCourses = viewCourses();
-                    if (viewedCourses == true) {
-                        UserInputManager.goBack();
-                    }
+                    viewCourses();
                     break;
                 case 2://view grades
-                    boolean viewedGrades = viewGrades();
-                    if (viewedGrades == true) {
-                        UserInputManager.goBack();
-                    }
+                    viewGrades();
                     break;
                 case 3://view class feedback
                     boolean viewedClassFeedback = viewClassFeedback();

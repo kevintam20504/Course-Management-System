@@ -483,20 +483,25 @@ public class UserInputManager {
         return grade;
     }
 
-    public static <E> boolean printList(String title, ArrayList<E> arr) {
+    public static String listOptions() {
         Scanner sc = new Scanner(System.in);
-        System.out.println("\nWould you like to print this list in a txt file?(Y/N)");
+        System.out.println("""
+                           ---------------------------------------------
+                           Enter "s" to sort, "p" to print to txt or "b" to go back: 
+                           """);
         String choice = sc.next();
-
-        while (!(choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes") || choice.equalsIgnoreCase("n") || choice.equalsIgnoreCase("no"))) {
-            System.out.println("Invalid input. Please try again.");
+        while (!(choice.equals("b") || choice.equals("s") || choice.equals("p"))) {
+            System.out.println("Invalid input. Enter \"s\" to sort, \"p\" to print to txt or \"b\" to go back:");
             choice = sc.next();
         }
-        if (choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes")) {
-            PrintList.printList(title, arr);
-            return true;
+        if (choice.equals("s")) {
+            return "s";
+        } else if (choice.equals("p")) {
+            return "p";
+        } else {
+            return "b";
         }
-        return false;
+
     }
 
 }
