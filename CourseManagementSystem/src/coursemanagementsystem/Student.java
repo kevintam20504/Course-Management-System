@@ -41,59 +41,116 @@ public class Student extends Account {
 
     public void viewCourses() {
         System.out.println("All courses: ");
-        for (Course c : courses) {
-            System.out.println(c);
+        if (!this.courses.isEmpty()) {
+            for (Course c : this.courses) {
+                System.out.println(c);
+            }
+            while (true) {
+                String choice = UserInputManager.goBack_Sort_orPrint();
+                if (choice.equals("s")) {
+                    UserInputManager.sortCourses(this.courses);
+                } else if (choice.equals("p")) {
+                    PrintList.printTxt("All courses of " + this.firstName + " " + this.lastName, courses);
+                } else {
+                    break;
+                }
+            }
+
+        } else {
+            System.out.println("You are not in any course.");
         }
     }
 
     public void viewGrades() {
         System.out.println("Grades: ");
-        for (Course c : courses) {
-            System.out.println(c.getName() + ": " + c.getGrades().get(this));
+        if (!this.courses.isEmpty()) {
+            ArrayList<String> list = new ArrayList<>();
+            
+            for (Course c : this.courses) {
+                String grade = c.getName() + ": " + c.getGrades().get(this) + "%, Average: " + c.getAverage() + "%";
+                list.add(grade);
+                System.out.println(grade);
+            }
+
+            while (true) {
+                String choice = UserInputManager.goBack_Sort_orPrint();
+                if (choice.equals("s")) {
+                    UserInputManager.sortGrades(this.courses, this);
+                } else if (choice.equals("p")) {
+                    PrintList.printTxt("Grades of " + this.firstName + " " + this.lastName, list);
+                } else {
+                    break;
+                }
+            }
+
+        } else {
+            System.out.println("You are not in any course.");
         }
     }
 
-    public boolean viewClassFeedback() {
+    public void viewClassFeedback() {
         Course course = UserInputManager.getCourse();
-        if (course != null) {
+        if (course != null && !course.getClassFeedback().isEmpty()) {
             if (this.courses.contains(course)) {
                 System.out.println("Class feedback for " + course.getName() + ": ");
                 ArrayList<String> feedbackList = course.getClassFeedback();
                 for (String feedback : feedbackList) {
                     System.out.println(feedback);
                 }
-                return true;
+
+                while (true) {
+                    boolean choice = UserInputManager.goBack_orPrint();
+                    if (!choice) {
+                        PrintList.printTxt("Class feedback for " + course.getName(), feedbackList);
+                    } else {
+                        break;
+                    }
+                }
+
             } else {
                 System.out.println("This student is not in this course.");
-                return false;
             }
-        }else
-            return false;
+        } else {
+            System.out.println("There is no feedback posted.");
+        }
 
     }
 
-    public boolean viewFeedback() {
+    public void viewFeedback() {
         Course course = UserInputManager.getCourse();
         if (course != null) {
-            if (this.courses.contains(course)) {
-                System.out.println("Individual feedback for " + course.getName() + ": ");
-                if (course.getStudentFeedback().get(course) == null) {
-                    course.getStudentFeedback().put(course, new HashMap<>());
-                }
-                if (course.getStudentFeedback().get(course).get(this) == null) {
-                    course.getStudentFeedback().get(course).put(this, new ArrayList<>());
-                }
-                ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
-                for (String feedback : feedbackList) {
-                    System.out.println(feedback);
-                }
-                return true;
-            } else {
-                System.out.println("This student is not in this course.");
-                return false;
+            if (course.getStudentFeedback().get(course) == null) {
+                course.getStudentFeedback().put(course, new HashMap<>());
             }
-        } else {
-            return false;
+            if (course.getStudentFeedback().get(course).get(this) == null) {
+                course.getStudentFeedback().get(course).put(this, new ArrayList<>());
+            }
+
+            ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
+
+            if (!feedbackList.isEmpty()) {
+                if (this.courses.contains(course)) {
+                    System.out.println("Individual feedback for " + course.getName() + ": ");
+
+                    for (String feedback : feedbackList) {
+                        System.out.println(feedback);
+                    }
+
+                    while (true) {
+                        Boolean choice = UserInputManager.goBack_orPrint();
+                        if (!choice) {
+                            PrintList.printTxt("Feedback for " + this.firstName + " " + this.lastName, feedbackList);
+                        } else {
+                            break;
+                        }
+                    }
+
+                } else {
+                    System.out.println("This student is not in this course.");
+                }
+            } else {
+                System.out.println("There is no feedback posted.");
+            }
         }
 
     }
@@ -105,23 +162,15 @@ public class Student extends Account {
             switch (UserInputManager.studentMenu()) {
                 case 1://view courses
                     viewCourses();
-                    UserInputManager.goBack();
                     break;
                 case 2://view grades
                     viewGrades();
-                    UserInputManager.goBack();
                     break;
                 case 3://view class feedback
-                    boolean viewedClassFeedback = viewClassFeedback();
-                    if (viewedClassFeedback == true) {
-                        UserInputManager.goBack();
-                    }
+                    viewClassFeedback();
                     break;
                 case 4://view individual feedback
-                    boolean viewedFeedback = viewFeedback();
-                    if (viewedFeedback == true) {
-                        UserInputManager.goBack();
-                    }
+                    viewFeedback();
                     break;
                 case 5://logout
                     exitCondition = true;

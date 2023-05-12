@@ -2,7 +2,6 @@ package coursemanagementsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class Admin extends Account {
 
@@ -33,28 +32,60 @@ public class Admin extends Account {
         Admin.admin = admin;
     }
 
-
     public static void viewStudents() {
         System.out.println("All Students at Vanier: ");
-        List<Student> list = new ArrayList<>(Student.getStudents().values());
+        ArrayList<Student> list = new ArrayList<>(Student.getStudents().values());
         for (Student s : list) {
-            System.out.println(s.getFirstName()+" "+s.getLastName()+" ("+s.getId()+")");
+            System.out.println(s.getFirstName() + " " + s.getLastName() + " (" + s.getId() + ")");
+        }
+
+        while (true) {
+            String choice = UserInputManager.goBack_Sort_orPrint();
+            if (choice.equals("s")) {
+                UserInputManager.sortStudents(list);
+            } else if (choice.equals("p")) {
+                PrintList.printTxt("All Students at Vanier", list);
+            } else {
+                break;
+            }
         }
     }
 
     public static void viewInstructors() {
         System.out.println("All Teachers at Vanier: ");
-        List<Instructor> list = new ArrayList<>(Instructor.getTeachers().values());
+        ArrayList<Instructor> list = new ArrayList<>(Instructor.getTeachers().values());
         for (Instructor i : Instructor.getTeachers().values()) {
             System.out.println(i);
+        }
+
+        while (true) {
+            String choice = UserInputManager.goBack_Sort_orPrint();
+            if (choice.equals("s")) {
+                UserInputManager.sortInstructors(list);
+            } else if (choice.equals("p")) {
+                PrintList.printTxt("All Teachers at Vanier", list);
+            } else {
+                break;
+            }
         }
     }
 
     public static void viewCourses() {
-        System.out.println("All avaiblable courses at Vanier:\n");
-        List<Course> list = new ArrayList<>(Course.getCourses().values());
+        System.out.println("All available courses at Vanier:\n");
+        ArrayList<Course> list = new ArrayList<>(Course.getCourses().values());
         for (Course c : list) {
             System.out.println(c);
+        }
+
+        while (true) {
+            String choice = UserInputManager.goBack_Sort_orPrint();
+            if (choice.equals("s")) {
+                UserInputManager.sortCourses(list);
+            } else if (choice.equals("p")) {
+                PrintList.printTxt("All Courses at Vanier", list);
+            } else {
+                break;
+            }
         }
     }
 
@@ -80,15 +111,12 @@ public class Admin extends Account {
                     break;
                 case 6://view courses
                     viewCourses();
-                    UserInputManager.goBack();
                     break;
                 case 7://view students
                     viewStudents();
-                    UserInputManager.goBack();
                     break;
                 case 8://view instructors
                     viewInstructors();
-                    UserInputManager.goBack();
                     break;
                 case 9://logout
                     exitCondition = true;
