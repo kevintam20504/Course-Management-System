@@ -760,6 +760,7 @@ public class UserInputManager {
                     exit = true;
                     break;
                 case "2": //grades descending
+                    
                     Collections.sort(courses, ((c1, c2) -> c2.getGrades().get(student) - c1.getGrades().get(student)));
                     System.out.println("Grades:");
                     for (Course c : courses) {

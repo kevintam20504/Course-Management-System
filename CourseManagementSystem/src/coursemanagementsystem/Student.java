@@ -67,6 +67,9 @@ public class Student extends Account {
             ArrayList<String> list = new ArrayList<>();
 
             for (Course c : this.courses) {
+                if (c.getGrades().get(this) == null) {
+                    c.getGrades().put(this, 0);
+                }
                 String grade = c.getName() + ": " + c.getGrades().get(this) + "%, Average: " + c.getAverage() + "%";
                 list.add(grade);
                 System.out.println(grade);
