@@ -118,39 +118,41 @@ public class Student extends Account {
 
     public void viewFeedback() {
         Course course = UserInputManager.getCourse();
-        if (course.getStudentFeedback().get(course) == null) {
-            course.getStudentFeedback().put(course, new HashMap<>());
-        }
-        if (course.getStudentFeedback().get(course).get(this) == null) {
-            course.getStudentFeedback().get(course).put(this, new ArrayList<>());
-        }
-        
-        ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
-        
-        if (!feedbackList.isEmpty()) {
-            if (this.courses.contains(course)) {
-                System.out.println("Individual feedback for " + course.getName() + ": ");
-
-                for (String feedback : feedbackList) {
-                    System.out.println(feedback);
-                }
-
-                while (true) {
-                    String choice = UserInputManager.listOptions();
-                    if (choice.equals("s")) {
-                        System.out.println("do sorting stuff here");
-                    } else if (choice.equals("p")) {
-                        PrintList.printTxt("Feedback for " + this.firstName + " " + this.lastName, feedbackList);
-                    } else {
-                        break;
-                    }
-                }
-
-            } else {
-                System.out.println("This student is not in this course.");
+        if (course != null) {
+            if (course.getStudentFeedback().get(course) == null) {
+                course.getStudentFeedback().put(course, new HashMap<>());
             }
-        } else {
-            System.out.println("There is no feedback posted.");
+            if (course.getStudentFeedback().get(course).get(this) == null) {
+                course.getStudentFeedback().get(course).put(this, new ArrayList<>());
+            }
+
+            ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
+
+            if (!feedbackList.isEmpty()) {
+                if (this.courses.contains(course)) {
+                    System.out.println("Individual feedback for " + course.getName() + ": ");
+
+                    for (String feedback : feedbackList) {
+                        System.out.println(feedback);
+                    }
+
+                    while (true) {
+                        String choice = UserInputManager.listOptions();
+                        if (choice.equals("s")) {
+                            System.out.println("do sorting stuff here");
+                        } else if (choice.equals("p")) {
+                            PrintList.printTxt("Feedback for " + this.firstName + " " + this.lastName, feedbackList);
+                        } else {
+                            break;
+                        }
+                    }
+
+                } else {
+                    System.out.println("This student is not in this course.");
+                }
+            } else {
+                System.out.println("There is no feedback posted.");
+            }
         }
 
     }
