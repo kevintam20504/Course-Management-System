@@ -2,33 +2,19 @@ package coursemanagementsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class Student extends Account {
+public class Admin extends Account {
 
-    private ArrayList<Course> courses = new ArrayList<>();
-    private static HashMap<Integer, Student> students = new HashMap<>();
     private static HashMap<Integer, String> database = new HashMap<>();
+    private static HashMap<Integer, Admin> admin = new HashMap<>();
 
-    public Student(String fName, String lName, int id, String password) {
-        super(fName, lName, id, password);
-        Student.database.put(id, password);
-        Student.students.put(id, this);
-    }
-
-    public ArrayList<Course> getCourses() {
-        return this.courses;
-    }
-
-    public void setCourses(ArrayList<Course> courses) {
-        this.courses = courses;
-    }
-
-    public static HashMap<Integer, Student> getStudents() {
-        return students;
-    }
-
-    public static void setStudents(HashMap<Integer, Student> students) {
-        Student.students = students;
+    public Admin(int id, String password) {
+        super(id, password);
+        firstName = "Admin";
+        lastName = " ";
+        Admin.database.put(id, password);
+        Admin.admin.put(id, this);
     }
 
     public static HashMap<Integer, String> getDatabase() {
@@ -36,119 +22,98 @@ public class Student extends Account {
     }
 
     public static void setDatabase(HashMap<Integer, String> database) {
-        Student.database = database;
+        Admin.database = database;
     }
 
-    public void viewCourses() {
-        System.out.println("All courses: ");
-        for (Course c : courses) {
+    public static HashMap<Integer, Admin> getAdmin() {
+        return admin;
+    }
+
+    public static void setAdmin(HashMap<Integer, Admin> admin) {
+        Admin.admin = admin;
+    }
+
+    public static void viewStudents() {
+        System.out.println("All Students at Vanier: ");
+        List<Student> list = new ArrayList<>(Student.getStudents().values());
+        for (Student s : list) {
+            System.out.println(s.getFirstName()+" "+s.getLastName()+" ("+s.getId()+")");
+        }
+    }
+
+    public static void viewInstructors() {
+        System.out.println("All Teachers at Vanier: ");
+        List<Instructor> list = new ArrayList<>(Instructor.getTeachers().values());
+        for (Instructor i : Instructor.getTeachers().values()) {
+            System.out.println(i);
+        }
+    }
+
+    public static void viewCourses() {
+        System.out.println("All avaiblable courses at Vanier:\n");
+        List<Course> list = new ArrayList<>(Course.getCourses().values());
+        for (Course c : list) {
             System.out.println(c);
         }
-    }
-
-    public void viewGrades() {
-        System.out.println("Grades: ");
-        for (Course c : courses) {
-            System.out.println(c.getName() + ": " + c.getGrades().get(this) + "%, Average: " + c.getAverage() + "%");
-        }
-    }
-
-    public boolean viewClassFeedback() {
-        Course course = UserInputManager.getCourse();
-        if (course != null) {
-            if (this.courses.contains(course)) {
-                System.out.println("Class feedback for " + course.getName() + ": ");
-                ArrayList<String> feedbackList = course.getClassFeedback();
-                for (String feedback : feedbackList) {
-                    System.out.println(feedback);
-                }
-                return true;
-            } else {
-                System.out.println("This student is not in this course.");
-                return false;
-            }
-        } else {
-            return false;
-        }
-
-    }
-
-    public boolean viewFeedback() {
-        Course course = UserInputManager.getCourse();
-        if (course != null) {
-            if (this.courses.contains(course)) {
-                System.out.println("Individual feedback for " + course.getName() + ": ");
-                if (course.getStudentFeedback().get(course) == null) {
-                    course.getStudentFeedback().put(course, new HashMap<>());
-                }
-                if (course.getStudentFeedback().get(course).get(this) == null) {
-                    course.getStudentFeedback().get(course).put(this, new ArrayList<>());
-                }
-                ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
-                for (String feedback : feedbackList) {
-                    System.out.println(feedback);
-                }
-                return true;
-            } else {
-                System.out.println("This student is not in this course.");
-                return false;
-            }
-        } else {
-            return false;
-        }
-
     }
 
     @Override
     public void performAction() {
         boolean exitCondition = false;
-        boolean back = false;
         String letterChoice;
+        boolean back = false;
         while (!exitCondition) {
-            switch (UserInputManager.studentMenu()) {
-                case 1://view courses
+            switch (UserInputManager.adminMenu()) {
+                case 1://create course
+                    UserInputManager.newCourse();
+                    break;
+                case 2://delete course
+                    UserInputManager.deleteCourse();
+                    break;
+                case 3://create account
+                    UserInputManager.newAccount();
+                    break;
+                case 4://delete account
+                    UserInputManager.deleteAccount();
+                    break;
+                case 5://assign course to student
+                    UserInputManager.assignCourse();
+                    break;
+                case 6://view courses
+                    List<Course> courses = new ArrayList<>(Course.getCourses().values());
                     viewCourses();
                     letterChoice = UserInputManager.goBack_Sort_orPrint();
                     if (letterChoice.equalsIgnoreCase("s")) {
-                        UserInputManager.sortCourses(this.courses);
+                        UserInputManager.sortCourses(courses);
                     } else if (letterChoice.equalsIgnoreCase("p")) {
                         //prints
                         System.out.println("print...");
                     }
-                    System.out.println("Going back to main menu.");
                     break;
-                case 2://view grades
-                    viewGrades();
+                case 7://view students
+                    List<Student> students = new ArrayList<>(Student.getStudents().values());
+                    viewStudents();
                     letterChoice = UserInputManager.goBack_Sort_orPrint();
                     if (letterChoice.equalsIgnoreCase("s")) {
-                        UserInputManager.sortGrades(this.courses,this);
+                        UserInputManager.sortStudents(students);
                     } else if (letterChoice.equalsIgnoreCase("p")) {
                         //prints
                         System.out.println("print...");
                     }
-                    System.out.println("Going back to main menu.");
+
                     break;
-                case 3://view class feedback
-                    boolean viewedClassFeedback = viewClassFeedback();
-                    if (viewedClassFeedback == true) {
-                        back = UserInputManager.goBack_orPrint();
-                        if (back == false) {
-                            //print
-                            System.out.println("print...");
-                        }
+                case 8://view instructors
+                    List<Instructor> teachers = new ArrayList<>(Instructor.getTeachers().values());
+                    viewInstructors();
+                    letterChoice = UserInputManager.goBack_Sort_orPrint();
+                    if (letterChoice.equalsIgnoreCase("s")) {
+                        UserInputManager.sortInstructors(teachers);
+                    } else if (letterChoice.equalsIgnoreCase("p")) {
+                        //prints
+                        System.out.println("print...");
                     }
                     break;
-                case 4://view individual feedback
-                    boolean viewedFeedback = viewFeedback();
-                    if (viewedFeedback == true) {
-                        back = UserInputManager.goBack_orPrint();
-                        if (back == false) {
-                            //print
-                            System.out.println("print...");
-                        }
-                    }
-                    break;
-                case 5://logout
+                case 9://logout
                     exitCondition = true;
                     break;
                 default:
@@ -156,11 +121,7 @@ public class Student extends Account {
                     break;
             }
         }
-    }
 
-    @Override
-    public String toString() {
-        return "[" + this.id + "] " + this.lastName + " " + this.firstName;
     }
 
 }
