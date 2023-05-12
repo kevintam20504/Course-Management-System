@@ -49,7 +49,7 @@ public class Student extends Account {
     public void viewGrades() {
         System.out.println("Grades: ");
         for (Course c : courses) {
-            System.out.println(c.getName() + ": " + c.getGrades().get(this));
+            System.out.println(c.getName() + ": " + c.getGrades().get(this) + "%, Average: " + c.getAverage() + "%");
         }
     }
 
@@ -67,8 +67,9 @@ public class Student extends Account {
                 System.out.println("This student is not in this course.");
                 return false;
             }
-        }else
+        } else {
             return false;
+        }
 
     }
 
@@ -101,26 +102,50 @@ public class Student extends Account {
     @Override
     public void performAction() {
         boolean exitCondition = false;
+        boolean back = false;
+        String letterChoice;
         while (!exitCondition) {
             switch (UserInputManager.studentMenu()) {
                 case 1://view courses
                     viewCourses();
-                    UserInputManager.goBack();
+                    letterChoice = UserInputManager.goBack_Sort_orPrint();
+                    if (letterChoice.equalsIgnoreCase("s")) {
+                        UserInputManager.sortCourses(this.courses);
+                    } else if (letterChoice.equalsIgnoreCase("p")) {
+                        //prints
+                        System.out.println("print...");
+                    }
+                    System.out.println("Going back to main menu.");
                     break;
                 case 2://view grades
                     viewGrades();
-                    UserInputManager.goBack();
+                    letterChoice = UserInputManager.goBack_Sort_orPrint();
+                    if (letterChoice.equalsIgnoreCase("s")) {
+                        UserInputManager.sortGrades(this.courses,this);
+                    } else if (letterChoice.equalsIgnoreCase("p")) {
+                        //prints
+                        System.out.println("print...");
+                    }
+                    System.out.println("Going back to main menu.");
                     break;
                 case 3://view class feedback
                     boolean viewedClassFeedback = viewClassFeedback();
                     if (viewedClassFeedback == true) {
-                        UserInputManager.goBack();
+                        back = UserInputManager.goBack_orPrint();
+                        if (back == false) {
+                            //print
+                            System.out.println("print...");
+                        }
                     }
                     break;
                 case 4://view individual feedback
                     boolean viewedFeedback = viewFeedback();
                     if (viewedFeedback == true) {
-                        UserInputManager.goBack();
+                        back = UserInputManager.goBack_orPrint();
+                        if (back == false) {
+                            //print
+                            System.out.println("print...");
+                        }
                     }
                     break;
                 case 5://logout
