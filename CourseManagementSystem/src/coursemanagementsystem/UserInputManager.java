@@ -1,5 +1,8 @@
 package coursemanagementsystem;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Scanner;
 
 public class UserInputManager {
@@ -369,17 +372,48 @@ public class UserInputManager {
     }
 
     //for viewCourses(), viewStudents(), viewGrades(), etc
-    public static void goBack() {
+    public static String goBack_Sort_orPrint() {
         Scanner sc = new Scanner(System.in);
         System.out.println("""
-                           ---------------------------------------------
-                           Enter "b" to go back: 
+                           ----------------------------------------------------
+                           Enter "b" to go back, enter "s" to sort, or enter "p" to print the page: 
                            """);
         String choice = sc.next();
         String back = "b";
-        while (!choice.equalsIgnoreCase(back)) {
-            System.out.println("Invalid, enter \"b\" to go back: ");
+        String print = "p";
+        String sort = "s";
+        while (!choice.equalsIgnoreCase(back) && !choice.equalsIgnoreCase(sort) && !choice.equalsIgnoreCase(print)) {
+            System.out.println("Invalid, enter \"b\" to go back, or enter \"s\" to sort, or enter \"p\" to print the page: ");
             choice = sc.next();
+        }
+        if (choice.equalsIgnoreCase(back)) {
+            return "b";
+        } else if (choice.equalsIgnoreCase(print)) {
+            return "p";
+        } else {
+            return "s";
+        }
+
+    }
+
+    //for viewFeedback() and viewClassFeedback() since they don't need sorting
+    public static boolean goBack_orPrint() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("""
+                           ----------------------------------------------------
+                           Enter "b" to go back or enter "p" to print the page: 
+                           """);
+        String choice = sc.next();
+        String back = "b";
+        String print = "p";
+        while (!choice.equalsIgnoreCase(back) && !choice.equalsIgnoreCase(print)) {
+            System.out.println("Invalid, enter \"b\" to go back or enter \"p\" to print the page: ");
+            choice = sc.next();
+        }
+        if (choice.equalsIgnoreCase(back)) {
+            return true;
+        } else {
+            return false;
         }
 
     }
@@ -476,9 +510,344 @@ public class UserInputManager {
             System.out.println("Please enter a number between 0 and 100 (Enter \"-1\" to go back to main menu):");
             grade = sc.nextInt();
         }
-        if(grade ==-1)
+        if (grade == -1) {
             System.out.println("Going back to main menu.");
+        }
         return grade;
+    }
+
+    public static void sortCourses(List<Course> courses) {
+        Scanner sc = new Scanner(System.in);
+        String letterChoice;
+        boolean back = false;
+        System.out.println("""
+                           How do you want to sort the page (Enter "-1" to go back to main menu)?
+                           [1]  Alphabetically
+                           [2]  Reverse Alphabetically
+                           [3]  Average (Ascending)
+                           [4]  Average (Descending)
+                           [5]  Teacher's last name (Alphabetically)
+                           [6]  Teacher's last name (Reverse Alphabetically)
+                           [7]  Amount of Students (Ascending)
+                           [8]  Amount of Students (Descending)
+                           """);
+        int choice = sc.nextInt();
+        while (choice < -1 || choice > 8) {
+            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
+            choice = sc.nextInt();
+        }
+        if (choice != -1) {
+            switch (choice) {
+                case 1: //alphabetically
+                    Collections.sort(courses, ((c1, c2) -> c1.getName().compareTo(c2.getName())));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 2: //reverse alphabetically
+                    Collections.sort(courses, ((c1, c2) -> c2.getName().compareTo(c1.getName())));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 3: //average ascending
+                    Collections.sort(courses, (c1, c2) -> (Double.compare(c1.getAverage(), c2.getAverage())));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 4: //average descending
+                    Collections.sort(courses, (c1, c2) -> (Double.compare(c2.getAverage(), c1.getAverage())));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 5: //Teacher lname alphabetically
+                    Collections.sort(courses, ((c1, c2) -> c1.getTeacher().getLastName().compareTo(c2.getTeacher().getLastName())));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 6: //Teacher lname reverse alphabetically
+                    Collections.sort(courses, ((c1, c2) -> c2.getTeacher().getLastName().compareTo(c1.getTeacher().getLastName())));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 7: //amount of students ascending
+                    Collections.sort(courses, ((c1, c2) -> c1.getStudents().size() - c2.getStudents().size()));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 8: //amount of students descending
+                    Collections.sort(courses, ((c1, c2) -> c2.getStudents().size() - c1.getStudents().size()));
+                    System.out.println("All courses taught: ");
+                    for (Course course : courses) {
+                        System.out.println(course);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortCourses(courses);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+            }
+
+        }
+    }
+
+    public static void sortStudents(List<Student> students) {
+        Scanner sc = new Scanner(System.in);
+        String letterChoice;
+        boolean back = false;
+        System.out.println("""
+                           How do you want to sort the page (Enter "-1" to go back to main menu)?
+                           
+                           [1]  Student's last name (Alphabetically)
+                           [2]  Student's last name (Reverse Alphabetically)
+                           """);
+        int choice = sc.nextInt();
+        while (choice < -1 || choice > 2) {
+            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
+            choice = sc.nextInt();
+        }
+        if (choice != -1) {
+            switch (choice) {
+                case 1: //last name alphabetiaclly
+                    Collections.sort(students, ((s1, s2) -> s1.getLastName().compareTo(s2.getLastName())));
+                    System.out.println("All students:");
+                    for (Student s : students) {
+                        System.out.println(s);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortStudents(students);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 2: //last name reverese alphabetically
+                    Collections.sort(students, ((s1, s2) -> s2.getLastName().compareTo(s1.getLastName())));
+                    System.out.println("All students:");
+                    for (Student s : students) {
+                        System.out.println(s);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortStudents(students);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+            }
+        }
+
+    }
+
+    public static void sortInstructors(List<Instructor> teachers) {
+        Scanner sc = new Scanner(System.in);
+        String letterChoice;
+        boolean back = false;
+        System.out.println("""
+                           How do you want to sort the page (Enter "-1" to go back to main menu)?
+                           
+                           [1]  Instructor's last name (Alphabetically)
+                           [2]  Instructor's last name (Reverse Alphabetically)
+                           """);
+        int choice = sc.nextInt();
+        while (choice < -1 || choice > 2) {
+            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
+            choice = sc.nextInt();
+        }
+        if (choice != -1) {
+            switch (choice) {
+                case 1: //last name alphabetiaclly
+                    Collections.sort(teachers, ((s1, s2) -> s1.getLastName().compareTo(s2.getLastName())));
+                    System.out.println("All students:");
+                    for (Instructor i : teachers) {
+                        System.out.println(i);
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortInstructors(teachers);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 2: //last name reverese alphabetically
+                    Collections.sort(teachers, ((s1, s2) -> s2.getLastName().compareTo(s1.getLastName())));
+                    System.out.println("All students:");
+                    for (Instructor i : teachers) {
+                        System.out.println(i);
+                    }
+                   letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortInstructors(teachers);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+            }
+
+        }
+    }
+
+    public static void sortGrades(List<Course> courses, Student student) {
+        Scanner sc = new Scanner(System.in);
+        String letterChoice;
+        boolean back = false;
+        System.out.println("""
+                           How do you want to sort the page (Enter "-1" to go back to main menu)?
+                           
+                           [1]  Grades (Ascending)
+                           [2]  Grades (Descending)
+                           [3]  Average (Ascending)
+                           [4]  Average (Descending)
+                           """);
+        int choice = sc.nextInt();
+        while (choice < -1 || choice > 4) {
+            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
+            choice = sc.nextInt();
+        }
+        if (choice != -1) {
+            switch (choice) {
+                case 1: //grades ascending
+                    Collections.sort(courses, ((c1, c2) -> c1.getGrades().get(student) - c2.getGrades().get(student)));
+                    System.out.println("Grades:");
+                    for (Course c : courses) {
+                        System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortGrades(courses, student);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 2: //grades descending
+                    Collections.sort(courses, ((c1, c2) -> c2.getGrades().get(student) - c1.getGrades().get(student)));
+                    System.out.println("Grades:");
+                    for (Course c : courses) {
+                        System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortGrades(courses, student);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 3: //average ascending
+                    Collections.sort(courses, ((c1, c2) -> Double.compare(c1.getAverage(), c2.getAverage())));
+                    System.out.println("Grades:");
+                    for (Course c : courses) {
+                        System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortGrades(courses, student);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+                case 4: //average descending
+                    Collections.sort(courses, ((c1, c2) -> Double.compare(c2.getAverage(), c1.getAverage())));
+                    System.out.println("Grades:");
+                    for (Course c : courses) {
+                        System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
+                    }
+                    letterChoice = goBack_Sort_orPrint();
+                    if(letterChoice.equalsIgnoreCase("s")){
+                        sortGrades(courses, student);
+                    }
+                    else if(letterChoice.equalsIgnoreCase("p")){
+                        //print
+                        System.out.println("print...");
+                    }
+                    break;
+            }
+        }
     }
 
 }
