@@ -33,7 +33,6 @@ public class Admin extends Account {
         Admin.admin = admin;
     }
 
-
     public static void viewStudents() {
         System.out.println("All Students at Vanier: ");
         List<Student> list = new ArrayList<>(Student.getStudents().values());
@@ -61,6 +60,8 @@ public class Admin extends Account {
     @Override
     public void performAction() {
         boolean exitCondition = false;
+        String letterChoice;
+        boolean back = false;
         while (!exitCondition) {
             switch (UserInputManager.adminMenu()) {
                 case 1://create course
@@ -79,16 +80,38 @@ public class Admin extends Account {
                     UserInputManager.assignCourse();
                     break;
                 case 6://view courses
+                    List<Course> courses = new ArrayList<>(Course.getCourses().values());
                     viewCourses();
-                    UserInputManager.goBack();
+                    letterChoice = UserInputManager.goBack_Sort_orPrint();
+                    if (letterChoice.equalsIgnoreCase("s")) {
+                        UserInputManager.sortCourses(courses);
+                    } else if (letterChoice.equalsIgnoreCase("p")) {
+                        //prints
+                        System.out.println("print...");
+                    }
                     break;
                 case 7://view students
+                    List<Student> students = new ArrayList<>(Student.getStudents().values());
                     viewStudents();
-                    UserInputManager.goBack();
+                    letterChoice = UserInputManager.goBack_Sort_orPrint();
+                    if (letterChoice.equalsIgnoreCase("s")) {
+                        UserInputManager.sortStudents(students);
+                    } else if (letterChoice.equalsIgnoreCase("p")) {
+                        //prints
+                        System.out.println("print...");
+                    }
+
                     break;
                 case 8://view instructors
+                    List<Instructor> teachers = new ArrayList<>(Instructor.getTeachers().values());
                     viewInstructors();
-                    UserInputManager.goBack();
+                    letterChoice = UserInputManager.goBack_Sort_orPrint();
+                    if (letterChoice.equalsIgnoreCase("s")) {
+                        UserInputManager.sortInstructors(teachers);
+                    } else if (letterChoice.equalsIgnoreCase("p")) {
+                        //prints
+                        System.out.println("print...");
+                    }
                     break;
                 case 9://logout
                     exitCondition = true;
