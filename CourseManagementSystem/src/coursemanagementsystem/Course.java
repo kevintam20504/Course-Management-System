@@ -2,6 +2,8 @@ package coursemanagementsystem;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.OptionalDouble;
+import java.util.OptionalInt;
 
 public class Course {
 
@@ -15,6 +17,7 @@ public class Course {
     private HashMap<Course, HashMap<Student, ArrayList<String>>> studentFeedback = new HashMap<>();
     private static final int MAX_STUDENTS = 30;
     private static final int MAX_TEACHERS = 1;
+    private double average;
 
     public Course(int courseId, String name, Instructor teacher) {
         this.courseId = courseId;
@@ -96,6 +99,12 @@ public class Course {
         return MAX_TEACHERS;
     }
 
+    public double getAverage() {
+        return getGrades().values().stream().mapToInt(n -> n).average().orElse(0.0);
+    }
+    
+    
+
     public void viewStudents() {
         System.out.println("All Students in this class");
         for (Student s : students) {
@@ -112,7 +121,7 @@ public class Course {
 
     @Override
     public String toString() {
-        return "[" + this.courseId + "] " + name + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students";
+        return "[" + this.courseId + "] " + name + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students, Average: "+getAverage()+"%";
     }
 
 }
