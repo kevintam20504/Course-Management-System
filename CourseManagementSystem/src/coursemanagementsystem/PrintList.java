@@ -19,35 +19,13 @@ public class PrintList {
         FileWriter fw;
         BufferedWriter bw;
 
-        if (file.exists()) {
-            try {
-                fw = new FileWriter(file);
-                bw = new BufferedWriter(fw);
-
-                bw.write(Time.getTime() + "\n\n" + title + "\n\n");
-                for (E element : arr) {
-                    bw.write(element + "\n");
-                }
-                System.out.println("Txt file " + title + ".txt was updated.");
-
-                bw.close();
-            } catch (IOException ex) {
-                Logger.getLogger(PrintList.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
         while (!file.exists()) {
             try {
                 fw = new FileWriter(file);
-                bw = new BufferedWriter(fw);
 
-                bw.write(Time.getTime() + "\n\n" + title + "\n\n");
-                for (E element : arr) {
-                    bw.write(element + "\n");
-                }
                 System.out.println("Txt file " + title + ".txt created.");
 
-                bw.close();
+                fw.close();
 
             } catch (IOException e) {
                 System.out.println("File path not found.");
@@ -63,6 +41,23 @@ public class PrintList {
                 file = new File(fileDir, "\\" + title + ".txt");
             }
 
+        }
+
+        if (file.exists()) {
+            try {
+                fw = new FileWriter(file);
+                bw = new BufferedWriter(fw);
+
+                bw.write(Time.getTime() + "\n\n" + title + "\n\n");
+                for (E element : arr) {
+                    bw.write(element + "\n");
+                }
+                System.out.println("Txt file " + title + ".txt was updated.");
+
+                bw.close();
+            } catch (IOException ex) {
+                Logger.getLogger(PrintList.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

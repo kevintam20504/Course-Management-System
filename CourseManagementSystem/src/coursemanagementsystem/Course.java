@@ -110,9 +110,13 @@ public class Course {
         }
     }
 
+    public double getAverage() {
+        return getGrades().values().stream().mapToInt(n -> n).average().orElse(0.0);
+    }
+
     @Override
     public String toString() {
-        return "[" + this.courseId + "] " + name + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students";
+        return "[" + this.courseId + "] " + name + ", " + teacher.getFirstName() + " " + teacher.getLastName() + ", " + students.size() + "/30 students, Average: "+getAverage()+"%";
     }
 
 }

@@ -46,9 +46,9 @@ public class Student extends Account {
                 System.out.println(c);
             }
             while (true) {
-                String choice = UserInputManager.listOptions();
+                String choice = UserInputManager.goBack_Sort_orPrint();
                 if (choice.equals("s")) {
-                    System.out.println("do sorting stuff here");
+                    UserInputManager.sortCourses(this.courses);
                 } else if (choice.equals("p")) {
                     PrintList.printTxt("All courses of " + this.firstName + " " + this.lastName, courses);
                 } else {
@@ -65,15 +65,17 @@ public class Student extends Account {
         System.out.println("Grades: ");
         if (!this.courses.isEmpty()) {
             ArrayList<String> list = new ArrayList<>();
+            
             for (Course c : this.courses) {
-                list.add(c.getName() + ": " + c.getGrades().get(this));
-                System.out.println(c.getName() + ": " + c.getGrades().get(this));
+                String grade = c.getName() + ": " + c.getGrades().get(this) + "%, Average: " + c.getAverage() + "%";
+                list.add(grade);
+                System.out.println(grade);
             }
 
             while (true) {
-                String choice = UserInputManager.listOptions();
+                String choice = UserInputManager.goBack_Sort_orPrint();
                 if (choice.equals("s")) {
-                    System.out.println("do sorting stuff here");
+                    UserInputManager.sortGrades(this.courses, this);
                 } else if (choice.equals("p")) {
                     PrintList.printTxt("Grades of " + this.firstName + " " + this.lastName, list);
                 } else {
@@ -97,10 +99,8 @@ public class Student extends Account {
                 }
 
                 while (true) {
-                    String choice = UserInputManager.listOptions();
-                    if (choice.equals("s")) {
-                        System.out.println("do sorting stuff here");
-                    } else if (choice.equals("p")) {
+                    boolean choice = UserInputManager.goBack_orPrint();
+                    if (!choice) {
                         PrintList.printTxt("Class feedback for " + course.getName(), feedbackList);
                     } else {
                         break;
@@ -137,10 +137,8 @@ public class Student extends Account {
                     }
 
                     while (true) {
-                        String choice = UserInputManager.listOptions();
-                        if (choice.equals("s")) {
-                            System.out.println("do sorting stuff here");
-                        } else if (choice.equals("p")) {
+                        Boolean choice = UserInputManager.goBack_orPrint();
+                        if (!choice) {
                             PrintList.printTxt("Feedback for " + this.firstName + " " + this.lastName, feedbackList);
                         } else {
                             break;

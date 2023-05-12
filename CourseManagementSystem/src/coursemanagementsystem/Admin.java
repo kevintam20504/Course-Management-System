@@ -40,9 +40,9 @@ public class Admin extends Account {
         }
 
         while (true) {
-            String choice = UserInputManager.listOptions();
+            String choice = UserInputManager.goBack_Sort_orPrint();
             if (choice.equals("s")) {
-                System.out.println("do sorting stuff here");
+                UserInputManager.sortStudents(list);
             } else if (choice.equals("p")) {
                 PrintList.printTxt("All Students at Vanier", list);
             } else {
@@ -57,11 +57,11 @@ public class Admin extends Account {
         for (Instructor i : Instructor.getTeachers().values()) {
             System.out.println(i);
         }
-        
+
         while (true) {
-            String choice = UserInputManager.listOptions();
+            String choice = UserInputManager.goBack_Sort_orPrint();
             if (choice.equals("s")) {
-                System.out.println("do sorting stuff here");
+                UserInputManager.sortInstructors(list);
             } else if (choice.equals("p")) {
                 PrintList.printTxt("All Teachers at Vanier", list);
             } else {
@@ -76,11 +76,11 @@ public class Admin extends Account {
         for (Course c : list) {
             System.out.println(c);
         }
-        
+
         while (true) {
-            String choice = UserInputManager.listOptions();
+            String choice = UserInputManager.goBack_Sort_orPrint();
             if (choice.equals("s")) {
-                System.out.println("do sorting stuff here");
+                UserInputManager.sortCourses(list);
             } else if (choice.equals("p")) {
                 PrintList.printTxt("All Courses at Vanier", list);
             } else {

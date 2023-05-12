@@ -44,15 +44,15 @@ public class Instructor extends Account {
         if (!this.courses.isEmpty()) {
             ArrayList<String> list = new ArrayList<>();
             for (Course course : this.courses) {
-                double avgGrade = course.getGrades().values().stream().mapToInt(n -> n).average().stream().reduce(0, (a, b) -> a + b);
+                double avgGrade = course.getAverage();
                 list.add(course.toString() + " Average: " + avgGrade);
                 System.out.println(course.toString() + " Average: " + avgGrade);
             }
             
             while(true){
-                String choice = UserInputManager.listOptions();
+                String choice = UserInputManager.goBack_Sort_orPrint();
                 if (choice.equals("s")) {
-                    System.out.println("do sorting stuff here");
+                    UserInputManager.sortCourses(this.courses);
                 }
                 else if (choice.equals("p")) {
                     PrintList.printTxt("All courses taught by " + this.firstName + " " + this.lastName, list);
@@ -120,9 +120,9 @@ public class Instructor extends Account {
             }
             
             while(true){
-                String choice = UserInputManager.listOptions();
+                String choice = UserInputManager.goBack_Sort_orPrint();
                 if (choice.equals("s")) {
-                    System.out.println("do sorting stuff here");
+                    UserInputManager.sortStudents(course.getStudents());
                 }
                 else if (choice.equals("p")) {
                     PrintList.printTxt("All students in " + course.getName(), course.getStudents());
