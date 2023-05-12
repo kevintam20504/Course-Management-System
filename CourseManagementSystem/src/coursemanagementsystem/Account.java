@@ -1,127 +1,56 @@
 package coursemanagementsystem;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+public abstract class Account {
 
-public class Admin extends Account {
+    protected String firstName;
+    protected String lastName;
+    protected int id;
+    protected String password;
 
-    private static HashMap<Integer, String> database = new HashMap<>();
-    private static HashMap<Integer, Admin> admin = new HashMap<>();
-
-    public Admin(int id, String password) {
-        super(id, password);
-        firstName = "Admin";
-        lastName = " ";
-        Admin.database.put(id, password);
-        Admin.admin.put(id, this);
+    public Account(int id, String password) {
+        this.id = id;
+        this.password = password;
     }
 
-    public static HashMap<Integer, String> getDatabase() {
-        return database;
+    public Account(String firstName, String lastName, int id, String password) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.id = id;
+        this.password = password;
     }
 
-    public static void setDatabase(HashMap<Integer, String> database) {
-        Admin.database = database;
+    public String getFirstName() {
+        return this.firstName;
     }
 
-    public static HashMap<Integer, Admin> getAdmin() {
-        return admin;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public static void setAdmin(HashMap<Integer, Admin> admin) {
-        Admin.admin = admin;
+    public String getLastName() {
+        return this.lastName;
     }
 
-    public static void viewStudents() {
-        System.out.println("All Students at Vanier: ");
-        List<Student> list = new ArrayList<>(Student.getStudents().values());
-        for (Student s : list) {
-            System.out.println(s.getFirstName()+" "+s.getLastName()+" ("+s.getId()+")");
-        }
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public static void viewInstructors() {
-        System.out.println("All Teachers at Vanier: ");
-        List<Instructor> list = new ArrayList<>(Instructor.getTeachers().values());
-        for (Instructor i : Instructor.getTeachers().values()) {
-            System.out.println(i);
-        }
+    public int getId() {
+        return this.id;
     }
 
-    public static void viewCourses() {
-        System.out.println("All avaiblable courses at Vanier:\n");
-        List<Course> list = new ArrayList<>(Course.getCourses().values());
-        for (Course c : list) {
-            System.out.println(c);
-        }
+    public void setId(int id) {
+        this.id = id;
     }
 
-    @Override
-    public void performAction() {
-        boolean exitCondition = false;
-        String letterChoice;
-        boolean back = false;
-        while (!exitCondition) {
-            switch (UserInputManager.adminMenu()) {
-                case 1://create course
-                    UserInputManager.newCourse();
-                    break;
-                case 2://delete course
-                    UserInputManager.deleteCourse();
-                    break;
-                case 3://create account
-                    UserInputManager.newAccount();
-                    break;
-                case 4://delete account
-                    UserInputManager.deleteAccount();
-                    break;
-                case 5://assign course to student
-                    UserInputManager.assignCourse();
-                    break;
-                case 6://view courses
-                    List<Course> courses = new ArrayList<>(Course.getCourses().values());
-                    viewCourses();
-                    letterChoice = UserInputManager.goBack_Sort_orPrint();
-                    if (letterChoice.equalsIgnoreCase("s")) {
-                        UserInputManager.sortCourses(courses);
-                    } else if (letterChoice.equalsIgnoreCase("p")) {
-                        //prints
-                        System.out.println("print...");
-                    }
-                    break;
-                case 7://view students
-                    List<Student> students = new ArrayList<>(Student.getStudents().values());
-                    viewStudents();
-                    letterChoice = UserInputManager.goBack_Sort_orPrint();
-                    if (letterChoice.equalsIgnoreCase("s")) {
-                        UserInputManager.sortStudents(students);
-                    } else if (letterChoice.equalsIgnoreCase("p")) {
-                        //prints
-                        System.out.println("print...");
-                    }
-
-                    break;
-                case 8://view instructors
-                    List<Instructor> teachers = new ArrayList<>(Instructor.getTeachers().values());
-                    viewInstructors();
-                    letterChoice = UserInputManager.goBack_Sort_orPrint();
-                    if (letterChoice.equalsIgnoreCase("s")) {
-                        UserInputManager.sortInstructors(teachers);
-                    } else if (letterChoice.equalsIgnoreCase("p")) {
-                        //prints
-                        System.out.println("print...");
-                    }
-                    break;
-                case 9://logout
-                    exitCondition = true;
-                    break;
-                default:
-                    System.out.println("Invalid input. Please try again.");
-                    break;
-            }
-        }
-
+    public String getPassword() {
+        return this.password;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public abstract void performAction();
 
 }
