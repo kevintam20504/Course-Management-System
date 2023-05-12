@@ -23,7 +23,7 @@ public class PrintList {
             try {
                 fw = new FileWriter(file);
 
-                System.out.println("Txt file " + title + ".txt created.");
+                System.out.println("Txt file " + title + ".txt was created.");
 
                 fw.close();
 

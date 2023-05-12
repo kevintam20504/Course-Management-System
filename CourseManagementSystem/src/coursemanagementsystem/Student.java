@@ -65,7 +65,7 @@ public class Student extends Account {
         System.out.println("Grades: ");
         if (!this.courses.isEmpty()) {
             ArrayList<String> list = new ArrayList<>();
-            
+
             for (Course c : this.courses) {
                 String grade = c.getName() + ": " + c.getGrades().get(this) + "%, Average: " + c.getAverage() + "%";
                 list.add(grade);
@@ -90,12 +90,16 @@ public class Student extends Account {
 
     public void viewClassFeedback() {
         Course course = UserInputManager.getCourse();
-        if (course != null && !course.getClassFeedback().isEmpty()) {
+        if (course != null) {
             if (this.courses.contains(course)) {
                 System.out.println("Class feedback for " + course.getName() + ": ");
                 ArrayList<String> feedbackList = course.getClassFeedback();
                 for (String feedback : feedbackList) {
                     System.out.println(feedback);
+                }
+
+                if (feedbackList.isEmpty()) {
+                    System.out.println("There is no feedback posted.");
                 }
 
                 while (true) {
@@ -110,8 +114,6 @@ public class Student extends Account {
             } else {
                 System.out.println("This student is not in this course.");
             }
-        } else {
-            System.out.println("There is no feedback posted.");
         }
 
     }
@@ -127,7 +129,10 @@ public class Student extends Account {
             }
 
             ArrayList<String> feedbackList = course.getStudentFeedback().get(course).get(this);
-
+            
+            if (feedbackList.isEmpty()) {
+                System.out.println("There is no feedback posted.");
+            }
             if (!feedbackList.isEmpty()) {
                 if (this.courses.contains(course)) {
                     System.out.println("Individual feedback for " + course.getName() + ": ");
@@ -148,9 +153,7 @@ public class Student extends Account {
                 } else {
                     System.out.println("This student is not in this course.");
                 }
-            } else {
-                System.out.println("There is no feedback posted.");
-            }
+            } 
         }
 
     }

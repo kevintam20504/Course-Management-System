@@ -1,6 +1,7 @@
 package coursemanagementsystem;
 
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -370,6 +371,7 @@ public class UserInputManager {
 
     }
 
+    /////////////////////////////////////
     //for viewCourses(), viewStudents(), viewGrades(), etc
     public static String goBack_Sort_orPrint() {
         Scanner sc = new Scanner(System.in);
@@ -418,10 +420,21 @@ public class UserInputManager {
     }
 
     public static void newPassword() {
-        Scanner sc = new Scanner(System.in);
-        boolean exit = false;
-        System.out.println("Enter your ID: ");
-        int inputId = sc.nextInt();
+        boolean exit;
+        int inputId;
+        Scanner sc;
+        while (true) {
+            try {
+                sc = new Scanner(System.in);
+                exit = false;
+                System.out.println("Enter your ID: ");
+                inputId = sc.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter an integer value.");
+            }
+        }
+
         while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
             System.out.println("That ID does not exist, try again (Enter \"-1\" to go back to main menu): ");
             inputId = sc.nextInt();
@@ -463,41 +476,63 @@ public class UserInputManager {
     }
 
     public static Course getCourse() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the id of the course you want to find (Enter \"-1\" to go back to main menu): ");
-        int inputId = sc.nextInt();
-        if (inputId == -1) {
-            System.out.println("Going back to main menu.");
-            return null;
-        }
-        while (!Course.getCourses().containsKey(inputId)) {
-            System.out.println("Invalid course ID, try again (Enter \"-1\" to go back to main menu): ");
-            inputId = sc.nextInt();
-            if (inputId == -1) {
-                System.out.println("Going back to main menu.");
-                return null;
+        Scanner sc;
+        int inputId;
+
+        while (true) {
+            try {
+                sc = new Scanner(System.in);
+                System.out.println("Enter the id of the course you want to find (Enter \"-1\" to go back to main menu): ");
+                inputId = sc.nextInt();
+                if (inputId == -1) {
+                    System.out.println("Going back to main menu.");
+                    return null;
+                }
+                while (!Course.getCourses().containsKey(inputId)) {
+                    System.out.println("Invalid course ID, try again (Enter \"-1\" to go back to main menu): ");
+                    inputId = sc.nextInt();
+                    if (inputId == -1) {
+                        System.out.println("Going back to main menu.");
+                        return null;
+                    }
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter an integer value.");
             }
         }
+
         return Course.getCourses().get(inputId);
 
     }
 
     public static Student getStudent() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the id of the student you want to find (Enter \"-1\" to go back to main menu): ");
-        int inputId = sc.nextInt();
-        if (inputId == -1) {
-            System.out.println("Going back to main menu.");
-            return null;
-        }
-        while (!Student.getStudents().containsKey(inputId)) {
-            System.out.println("Invalid student ID, try again (Enter \"-1\" to go back to main menu): ");
-            inputId = sc.nextInt();
-            if (inputId == -1) {
-                System.out.println("Going back to main menu.");
-                return null;
+        Scanner sc;
+        int inputId;
+
+        while (true) {
+            try {
+                sc = new Scanner(System.in);
+                System.out.println("Enter the id of the student you want to find (Enter \"-1\" to go back to main menu): ");
+                inputId = sc.nextInt();
+                if (inputId == -1) {
+                    System.out.println("Going back to main menu.");
+                    return null;
+                }
+                while (!Student.getStudents().containsKey(inputId)) {
+                    System.out.println("Invalid student ID, try again (Enter \"-1\" to go back to main menu): ");
+                    inputId = sc.nextInt();
+                    if (inputId == -1) {
+                        System.out.println("Going back to main menu.");
+                        return null;
+                    }
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter integer value.");
             }
         }
+
         return Student.getStudents().get(inputId);
     }
 

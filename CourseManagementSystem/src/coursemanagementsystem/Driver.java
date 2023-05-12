@@ -34,32 +34,29 @@ public class Driver {
         boolean exitCondition = false;
 
         while (!exitCondition) {
-            try {//try catch only here now for ease of testing in case you type something wrong
-                switch (UserInputManager.mainMenu()) {
-                    case 1:
-                        Account account = UserInputManager.login();
-                        if (account == null) {
-                            break;
-                        } else {
-                            System.out.println("\nWelcome " + account.getFirstName() + " " + account.getLastName());
-                            account.performAction();
-                            break;
-                        }
 
-                    case 2:
-                        UserInputManager.newPassword();
+            switch (UserInputManager.mainMenu()) {
+                case 1:
+                    Account account = UserInputManager.login();
+                    if (account == null) {
                         break;
-                    case 3:
-                        System.out.println("See you again!");
-                        exitCondition = true;
+                    } else {
+                        System.out.println("\nWelcome " + account.getFirstName() + " " + account.getLastName());
+                        account.performAction();
                         break;
+                    }
 
-                    default:
-                        System.out.println("Invalid input. Please try again.");
-                        break;
-                }
-            } catch (Exception e) {
-                System.out.println("oops");
+                case 2:
+                    UserInputManager.newPassword();
+                    break;
+                case 3:
+                    System.out.println("See you again!");
+                    exitCondition = true;
+                    break;
+
+                default:
+                    System.out.println("Invalid input. Please try again.");
+                    break;
             }
 
         }
