@@ -11,16 +11,6 @@ import java.util.logging.Logger;
 
 public class PrintList {
 
-    public static void main(String[] args) {
-        ArrayList<String> arr = new ArrayList<>();
-        arr.add("e");
-        arr.add("f");
-        arr.add("fag");
-        printTxt("hi", arr);
-        arr.add("added");
-        printTxt("hi", arr);
-    }
-
     static File file = new File("");
     static String fileDir = "";
 
@@ -33,13 +23,13 @@ public class PrintList {
             try {
                 fw = new FileWriter(file);
                 bw = new BufferedWriter(fw);
-                
-                bw.write(Time.getTime() + "\n" + title + "\n\n");
+
+                bw.write(Time.getTime() + "\n\n" + title + "\n\n");
                 for (E element : arr) {
                     bw.write(element + "\n");
                 }
                 System.out.println("Txt file " + title + ".txt was updated.");
-                
+
                 bw.close();
             } catch (IOException ex) {
                 Logger.getLogger(PrintList.class.getName()).log(Level.SEVERE, null, ex);

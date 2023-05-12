@@ -38,7 +38,17 @@ public class Admin extends Account {
         for (Student s : list) {
             System.out.println(s.getFirstName() + " " + s.getLastName() + " (" + s.getId() + ")");
         }
-        PrintList.printTxt("All Students at Vanier", list);
+
+        while (true) {
+            String choice = UserInputManager.listOptions();
+            if (choice.equals("s")) {
+                System.out.println("do sorting stuff here");
+            } else if (choice.equals("p")) {
+                PrintList.printTxt("All Students at Vanier", list);
+            } else {
+                break;
+            }
+        }
     }
 
     public static void viewInstructors() {
@@ -47,7 +57,17 @@ public class Admin extends Account {
         for (Instructor i : Instructor.getTeachers().values()) {
             System.out.println(i);
         }
-        PrintList.printTxt("All Teachers at Vanier", list);
+        
+        while (true) {
+            String choice = UserInputManager.listOptions();
+            if (choice.equals("s")) {
+                System.out.println("do sorting stuff here");
+            } else if (choice.equals("p")) {
+                PrintList.printTxt("All Teachers at Vanier", list);
+            } else {
+                break;
+            }
+        }
     }
 
     public static void viewCourses() {
@@ -56,7 +76,17 @@ public class Admin extends Account {
         for (Course c : list) {
             System.out.println(c);
         }
-        PrintList.printTxt("All Courses at Vanier", list);
+        
+        while (true) {
+            String choice = UserInputManager.listOptions();
+            if (choice.equals("s")) {
+                System.out.println("do sorting stuff here");
+            } else if (choice.equals("p")) {
+                PrintList.printTxt("All Courses at Vanier", list);
+            } else {
+                break;
+            }
+        }
     }
 
     @Override
@@ -81,15 +111,12 @@ public class Admin extends Account {
                     break;
                 case 6://view courses
                     viewCourses();
-                    UserInputManager.goBack();
                     break;
                 case 7://view students
                     viewStudents();
-                    UserInputManager.goBack();
                     break;
                 case 8://view instructors
                     viewInstructors();
-                    UserInputManager.goBack();
                     break;
                 case 9://logout
                     exitCondition = true;

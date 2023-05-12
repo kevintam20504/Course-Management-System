@@ -370,20 +370,20 @@ public class UserInputManager {
     }
 
     //for viewCourses(), viewStudents(), viewGrades(), etc
-    public static void goBack() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("""
-                           ---------------------------------------------
-                           Enter "b" to go back: 
-                           """);
-        String choice = sc.next();
-        String back = "b";
-        while (!choice.equalsIgnoreCase(back)) {
-            System.out.println("Invalid, enter \"b\" to go back: ");
-            choice = sc.next();
-        }
-
-    }
+//    public static void goBack() {
+//        Scanner sc = new Scanner(System.in);
+//        System.out.println("""
+//                           ---------------------------------------------
+//                           Enter "b" to go back: 
+//                           """);
+//        String choice = sc.next();
+//        String back = "b";
+//        while (!choice.equalsIgnoreCase(back)) {
+//            System.out.println("Invalid, enter \"b\" to go back: ");
+//            choice = sc.next();
+//        }
+//
+//    }
 
     public static void newPassword() {
         Scanner sc = new Scanner(System.in);
