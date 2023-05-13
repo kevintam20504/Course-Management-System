@@ -1,4 +1,4 @@
-package coursemanagementsystem;
+ package coursemanagementsystem;
 
 import java.util.Collections;
 import java.util.List;
@@ -7,8 +7,9 @@ import java.util.Scanner;
 public class UserInputManager {
 
     public static int mainMenu() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("""
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("""
                          ---------------------------------------------
                          Welcome to Course Management System for Vanier
                          ---------------------------------------------
@@ -18,15 +19,21 @@ public class UserInputManager {
                          [3]  Quit
                          ---------------------------------------------
                          """);
-        int userOption = sc.nextInt();
+            int userOption = sc.nextInt();
 
-        return userOption;
+            return userOption;
+        } catch (Exception e) {
+            System.out.println("Cannot do that.");
+            return mainMenu();
+        }
+
     }
 
     public static Account login() {
-        Scanner sc = new Scanner(System.in);
-        String password;
-        System.out.print("""
+        try {
+            Scanner sc = new Scanner(System.in);
+            String password;
+            System.out.print("""
                          ---------------------------------------------
                          Select one of the following options.
                          ---------------------------------------------
@@ -36,62 +43,70 @@ public class UserInputManager {
                          [4]  Back
                          ---------------------------------------------
                          """);
-        int userOption = sc.nextInt();
+            int userOption = sc.nextInt();
 
-        while (userOption < 1 || userOption > 4) {
-            System.out.println("Invalid input. Please try again.");
-            userOption = sc.nextInt();
-        }
-
-        if (userOption == 4) {
-            System.out.println("Returning to main menu.");
-            return null;
-        }
-
-        System.out.println("Enter your ID:");
-        int id = sc.nextInt();
-        try {
-            System.out.println("Enter password");
-            password = sc.next();
-            if (Student.getDatabase().get(id) == null && Instructor.getDatabase().get(id) == null && Admin.getDatabase().get(id) == null) {
-                throw new NullPointerException();
+            while (userOption < 1 || userOption > 4) {
+                System.out.println("Invalid input. Please try again.");
+                userOption = sc.nextInt();
             }
 
-        } catch (NullPointerException e) {
-            if (Student.getStudents().get(id) == null) {
-                System.out.println("Wrong id or password. Please try again.");
-                return login();
-            } else {
-                System.out.println("You need to initialize your password.");
+            if (userOption == 4) {
+                System.out.println("Returning to main menu.");
                 return null;
             }
+
+            System.out.println("Enter your ID (Enter \"-1\" to go back to main menu):");
+            int id = sc.nextInt();
+            if (id == -1) {
+                System.out.println("Going back to main menu.");
+                return null;
+            }
+            try {
+                System.out.println("Enter password");
+                password = sc.next();
+                if (Student.getDatabase().get(id) == null && Instructor.getDatabase().get(id) == null && Admin.getDatabase().get(id) == null) {
+                    throw new NullPointerException();
+                }
+
+            } catch (NullPointerException e) {
+                if (Student.getStudents().get(id) == null) {
+                    System.out.println("Wrong id or password. Please try again.");
+                    return login();
+                } else {
+                    System.out.println("You need to initialize your password.");
+                    return null;
+                }
+            }
+
+            switch (userOption) {
+                case 1:
+                    if (Student.getDatabase().containsKey(id) && Student.getDatabase().get(id).equals(password)) {
+                        return Student.getStudents().get(id);
+                    }
+                    break;
+
+                case 2:
+                    if (Instructor.getDatabase().containsKey(id) && Instructor.getDatabase().get(id).equals(password)) {
+                        return Instructor.getTeachers().get(id);
+                    }
+                    break;
+
+                case 3:
+                    if (Admin.getDatabase().containsKey(id) && Admin.getDatabase().get(id).equals(password)) {
+                        return Admin.getAdmin().get(id);
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            System.out.println("Wrong id or password. Please try again.");
+            // call login() again if user enters wrong combination
+            return login();
+        }catch(Exception e){
+            System.out.println("Cannot do that.");
+            return login();
         }
-
-        switch (userOption) {
-            case 1:
-                if (Student.getDatabase().containsKey(id) && Student.getDatabase().get(id).equals(password)) {
-                    return Student.getStudents().get(id);
-                }
-                break;
-
-            case 2:
-                if (Instructor.getDatabase().containsKey(id) && Instructor.getDatabase().get(id).equals(password)) {
-                    return Instructor.getTeachers().get(id);
-                }
-                break;
-
-            case 3:
-                if (Admin.getDatabase().containsKey(id) && Admin.getDatabase().get(id).equals(password)) {
-                    return Admin.getAdmin().get(id);
-                }
-                break;
-
-            default:
-                break;
-        }
-        System.out.println("Wrong id or password. Please try again.");
-        // call login() again if user enters wrong combination
-        return login();
     }
 
     /*
@@ -107,8 +122,9 @@ public class UserInputManager {
     }
      */
     public static int adminMenu() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("""
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("""
                          _____________________________________________
                          Admin Menu
                          ---------------------------------------------
@@ -124,17 +140,22 @@ public class UserInputManager {
                          [9]  Logout
                          _____________________________________________
                          """);
-        int userOption = sc.nextInt();
-        while (userOption < 1 || userOption > 9) {
-            System.out.println("Invalid choice, try again:");
-            userOption = sc.nextInt();
+            int userOption = sc.nextInt();
+            while (userOption < 1 || userOption > 9) {
+                System.out.println("Invalid choice, try again:");
+                userOption = sc.nextInt();
+            }
+            return userOption;
+        } catch (Exception e) {
+            System.out.println("Cannot do that. ");
+            return adminMenu();
         }
-        return userOption;
     }
 
     public static int studentMenu() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("""
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("""
                          _____________________________________________
                          Student Menu
                          ---------------------------------------------
@@ -146,17 +167,22 @@ public class UserInputManager {
                          [5]  Logout
                          _____________________________________________
                          """);
-        int userOption = sc.nextInt();
-        while (userOption < 1 || userOption > 5) {
-            System.out.println("Invalid choice, try again:");
-            userOption = sc.nextInt();
+            int userOption = sc.nextInt();
+            while (userOption < 1 || userOption > 5) {
+                System.out.println("Invalid choice, try again:");
+                userOption = sc.nextInt();
+            }
+            return userOption;
+        } catch (Exception e) {
+            System.out.println("Cannot do that.");
+            return studentMenu();
         }
-        return userOption;
     }
 
     public static int instructorMenu() {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("""
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.print("""
                          _____________________________________________
                          Instructor Menu
                          ---------------------------------------------
@@ -169,12 +195,16 @@ public class UserInputManager {
                          [6]  Logout
                          _____________________________________________
                          """);
-        int userOption = sc.nextInt();
-        while (userOption < 1 || userOption > 6) {
-            System.out.println("Invalid choice, try again:");
-            userOption = sc.nextInt();
+            int userOption = sc.nextInt();
+            while (userOption < 1 || userOption > 6) {
+                System.out.println("Invalid choice, try again:");
+                userOption = sc.nextInt();
+            }
+            return userOption;
+        } catch (Exception e) {
+            System.out.println("Cannot do that.");
+            return instructorMenu();
         }
-        return userOption;
     }
 
     public static String enterFeedback() {
@@ -185,187 +215,219 @@ public class UserInputManager {
     }
 
     public static void deleteAccount() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the ID of the account you want to delete (Enter \"-1\" to go back): ");
-        int inputID = sc.nextInt();
-        if (Student.getDatabase().containsKey(inputID)) {
-            Student.getDatabase().remove(inputID);
-            Student.getStudents().remove(inputID);
-            System.out.println("Account deleted");
-        } else if (Instructor.getDatabase().containsKey(inputID)) {
-            Instructor.getDatabase().remove(inputID);
-            Instructor.getTeachers().remove(inputID);
-            System.out.println("Account deleted");
-        } else if (inputID == -1) {
-            System.out.println("Going back to main menu.");
-        } else {
-            System.out.println("Cannot delete this user, try again");
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter the ID of the account you want to delete (Enter \"-1\" to go back): ");
+            int inputID = sc.nextInt();
+            if (Student.getDatabase().containsKey(inputID)) {
+                Student.getDatabase().remove(inputID);
+                Student.getStudents().remove(inputID);
+                System.out.println("Account deleted");
+            } else if (Instructor.getDatabase().containsKey(inputID)) {
+                Instructor.getDatabase().remove(inputID);
+                Instructor.getTeachers().remove(inputID);
+                System.out.println("Account deleted");
+            } else if (inputID == -1) {
+                System.out.println("Going back to main menu.");
+            } else {
+                System.out.println("Cannot delete this user, try again");
+                deleteAccount();
+            }
+        } catch (Exception e) {
+            System.out.println("Cannot do that.");
             deleteAccount();
         }
     }
 
     public static void newAccount() {
-        Scanner sc = new Scanner(System.in);
-        boolean exit = false;
-        System.out.println("Enter first name: ");
-        String fname = sc.next();
-        System.out.println("Enter last name: ");
-        String lname = sc.next();
-        System.out.println("Enter new ID: ");
-        int newId = sc.nextInt();
-        while (Student.getDatabase().containsKey(newId) || Instructor.getDatabase().containsKey(newId)) {
-            System.out.println("Cannot create this ID, try again (Enter \"-1\" to go back to main menu): ");
-            newId = sc.nextInt();
-            if (newId == -1) {
-                exit = true;
-                break;
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter first name (Enter \"-1\" to go back to main menu): ");
+            String fname = sc.next();
+            if (fname.equals("-1")) {
+                System.out.println("Going back to main menu.");
+                return;
             }
-        }
-        if (exit == false) {
-            System.out.println("Is this person:\n1. A student\n2. An instructor\nEnter: ");
+            System.out.println("Enter last name (Enter \"-1\" to go back to main menu): ");
+            String lname = sc.next();
+            if (lname.equals("-1")) {
+                System.out.println("Going back to main menu.");
+                return;
+            }
+            System.out.println("Enter new ID (Enter \"-1\" to go back to main menu): ");
+            int newId = sc.nextInt();
+            if (newId == -1) {
+                System.out.println("Going back to main menu.");
+                return;
+            }
+            if (newId < -1 || newId == 0) {
+                throw new ArithmeticException("ID cannot be negative or 0");
+            }
+            while (Student.getDatabase().containsKey(newId) || Instructor.getDatabase().containsKey(newId)) {
+                System.out.println("Cannot create this ID, try again (Enter \"-1\" to go back to main menu): ");
+                newId = sc.nextInt();
+                if (newId == -1) {
+                    System.out.println("Going back to main menu.");
+                    return;
+                }
+            }
+            System.out.println("Is this person:\n1. A student\n2. An instructor\n\n(\"-1\" to go back to main menu)\nEnter: ");
             int choice = sc.nextInt();
+            if (choice == -1) {
+                System.out.println("Going back to main menu.");
+                return;
+            }
             while (choice != 1 && choice != 2) {
                 System.out.println("Invalid, try again (Enter \"-1\" to go back to main menu): ");
                 choice = sc.nextInt();
                 if (choice == -1) {
-                    exit = true;
-                    break;
+                    System.out.println("Going back to main menu.");
+                    return;
                 }
             }
-            if (exit == false) {
-                // if account is student
-                if (choice == 1) {
-                    Student newStudent = new Student(fname, lname, newId, null);
-                    Student.getDatabase().put(newId, null);
-                    Student.getStudents().put(newId, newStudent);
-                } //if account is instructor
-                else {
-                    Instructor newInstructor = new Instructor(fname, lname, newId, null);
-                    Instructor.getDatabase().put(newId, null);
-                    Instructor.getTeachers().put(newId, newInstructor);
-                }
-                System.out.println("Account created! User needs to create password");
-            } else {
-                System.out.println("Going back to main menu.");
+            // if account is student
+            if (choice == 1) {
+                Student newStudent = new Student(fname, lname, newId, null);
+                Student.getDatabase().put(newId, null);
+                Student.getStudents().put(newId, newStudent);
+            } //if account is instructor
+            else {
+                Instructor newInstructor = new Instructor(fname, lname, newId, null);
+                Instructor.getDatabase().put(newId, null);
+                Instructor.getTeachers().put(newId, newInstructor);
             }
-        } else {
-            System.out.println("Going back to main menu.");
+        } catch (Exception e) {
+            System.out.println("Cannot do that.");
+            newAccount();
         }
     }
 
     public static void assignCourse() {
-        Scanner sc = new Scanner(System.in);
-        boolean exit = false;
-        System.out.println("Who is the Student that needs a class added (enter their ID): ");
-        int inputID = sc.nextInt();
-        while (!Student.getStudents().containsKey(inputID)) {
-            System.out.println("Invalid ID try again (Enter \"-1\" to go back to main menu): ");
-            inputID = sc.nextInt();
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Who is the Student that needs a class added (enter their ID, or \"-1\" to go back to main menu): ");
+            int inputID = sc.nextInt();
             if (inputID == -1) {
-                exit = true;
-                break;
+                System.out.println("Going back to main menu.");
+                return;
             }
-        }
-        if (exit == false) {
+            while (!Student.getStudents().containsKey(inputID)) {
+                System.out.println("Invalid ID try again (Enter \"-1\" to go back to main menu): ");
+                inputID = sc.nextInt();
+                if (inputID == -1) {
+                    System.out.println("Going back to main menu.");
+                    return;
+                }
+            }
             Student student = Student.getStudents().get(inputID);
-            System.out.println("What class does " + student.getFirstName() + " want to add (enter course ID): ");
+            System.out.println("What class does " + student.getFirstName() + " want to add (enter course ID, or \"-1\" to go back to main menu): ");
             int inputCourseID = sc.nextInt();
+            if (inputCourseID == -1) {
+                System.out.println("Going back to main menu.");
+                return;
+            }
             while (!Course.getCourses().containsKey(inputCourseID)) {
                 System.out.println("Invalid ID try again (Enter \"-1\" to go back to main menu): ");
                 inputCourseID = sc.nextInt();
                 if (inputCourseID == -1) {
-                    exit = true;
-                    break;
+                    System.out.println("Going back to main menu.");
+                    return;
                 }
             }
-            if (exit == false) {
-                Course course = Course.getCourses().get(inputCourseID);
-                if (course.getStudents().size() == Course.getMAX_STUDENTS()) {
-                    System.out.println(course.getName() + " is already full");
-                } else {
-                    student.getCourses().add(course);
-                    course.getStudents().add(student);
-                    System.out.println(course.getName() + " has been added to " + student.getFirstName() + "'s schedule");
-                }
+            Course course = Course.getCourses().get(inputCourseID);
+            if (course.getStudents().contains(student)) {
+                System.out.println(student.getFirstName() + " is already in " + course.getName());
+            } else if (course.getStudents().size() == Course.getMAX_STUDENTS()) {
+                System.out.println(course.getName() + " is already full");
             } else {
-                System.out.println("Going back to main menu.");
+                student.getCourses().add(course);
+                course.getStudents().add(student);
+                System.out.println(course.getName() + " has been added to " + student.getFirstName() + "'s schedule");
             }
-        } else {
-            System.out.println("Going back to main menu.");
+        } catch (Exception e) {
+            System.out.println("Cannot do that.");
+            assignCourse();
         }
     }
 
     public static void newCourse() {
         Scanner sc = new Scanner(System.in);
-        boolean exit = false;
-        System.out.println("What is the name of the course you want to add: ");
+        System.out.println("What is the name of the course you want to add (Enter \"-1\" to go back to main menu): ");
         String newCourseName = sc.nextLine();
+        if (newCourseName.equals("-1")) {
+            System.out.println("Going back to main menu.");
+            return;
+        }
         int newCourseId = 0;
         int inputInstructorId = 0;
         try {
-            System.out.println("Enter the course ID: ");
+            System.out.println("Enter the course ID (Enter \"-1\" to go back to main menu): ");
             newCourseId = sc.nextInt();
+            if (newCourseId == -1) {
+                System.out.println("Going back to main menu.");
+                return;
+            }
             while (Course.getCourses().containsKey(newCourseId)) {
                 System.out.println("That class already exists, try again (Enter \"-1\" to go back to main menu): ");
                 newCourseId = sc.nextInt();
                 if (newCourseId == -1) {
-                    exit = true;
-                    break;
+                    System.out.println("Going back to main menu.");
+                    return;
                 }
             }
-            if (exit == false) {
 
-                try {
-                    System.out.println("Who will teach this class (enter the instructor's id): ");
-                    inputInstructorId = sc.nextInt();
-                    while (!Instructor.getTeachers().containsKey(inputInstructorId)) {
-                        System.out.println("That instructor ID doesn't exist, try again (Enter \"-1\" to go back to main menu): ");
-                        inputInstructorId = sc.nextInt();
-                        if (inputInstructorId == -1) {
-                            exit = true;
-                            break;
-                        }
-                    }
-                    if (exit == false) {
-                        Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
-                        Course newCourse = new Course(newCourseId, newCourseName, instructor);
-                        System.out.println(newCourseName + " has been created");
-                    } else {
-                        System.out.println("Going back to main menu.");
-                    }
-                } catch (Exception e) {
-                    System.out.println("Invalid ID");
-                }
-            } else {
+            System.out.println("Who will teach this class (enter the instructor's id, or \"-1\" to go back to main menu): ");
+            inputInstructorId = sc.nextInt();
+            if (inputInstructorId == -1) {
                 System.out.println("Going back to main menu.");
+                return;
             }
+            while (!Instructor.getTeachers().containsKey(inputInstructorId)) {
+                System.out.println("That instructor ID doesn't exist, try again (Enter \"-1\" to go back to main menu): ");
+                inputInstructorId = sc.nextInt();
+                if (inputInstructorId == -1) {
+                    System.out.println("Going back to main menu.");
+                    return;
+                }
+            }
+            Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
+            Course newCourse = new Course(newCourseId, newCourseName, instructor);
+            System.out.println(newCourseName + " has been created");
 
         } catch (Exception e) {
-            System.out.println("Invalid course ID");
+            System.out.println("Cannot do that.");
+            newCourse();
         }
 
     }
 
     public static void deleteCourse() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the course ID that you want to delete (Enter \"-1\" to go back to main menu): ");
-        int inputCourseId = sc.nextInt();
-        while (!Course.getCourses().containsKey(inputCourseId) && inputCourseId != -1) {
-            System.out.println("Invalid course ID, try again (Enter \"-1\" to go back to main menu): ");
-            inputCourseId = sc.nextInt();
-        }
-        if (inputCourseId == -1) {
-            System.out.println("Going back to main menu.");
-        } else {
-            System.out.println(Course.getCourses().get(inputCourseId).getName() + " has been deleted");
-            //remove courses from student schedules
-            Course courseToRemove = Course.getCourses().get(inputCourseId);
-            for (Student s : courseToRemove.getStudents()) {
-                s.getCourses().remove(courseToRemove);
+        try {
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Enter the course ID that you want to delete (Enter \"-1\" to go back to main menu): ");
+            int inputCourseId = sc.nextInt();
+            while (!Course.getCourses().containsKey(inputCourseId) && inputCourseId != -1) {
+                System.out.println("Invalid course ID, try again (Enter \"-1\" to go back to main menu): ");
+                inputCourseId = sc.nextInt();
+
             }
-            //remove from teacher
-            courseToRemove.getTeacher().getCourses().remove(courseToRemove);
-            Course.getCourses().remove(inputCourseId);
+            if (inputCourseId == -1) {
+                System.out.println("Going back to main menu.");
+            } else {
+                System.out.println(Course.getCourses().get(inputCourseId).getName() + " has been deleted");
+                //remove courses from student schedules
+                Course courseToRemove = Course.getCourses().get(inputCourseId);
+                for (Student s : courseToRemove.getStudents()) {
+                    s.getCourses().remove(courseToRemove);
+                }
+                //remove from teacher
+                courseToRemove.getTeacher().getCourses().remove(courseToRemove);
+                //remove course
+                Course.getCourses().remove(inputCourseId);
+            }
+        } catch (Exception e) {
+            System.out.println("Cannot do that.");
+            deleteCourse();
         }
 
     }
@@ -419,47 +481,47 @@ public class UserInputManager {
 
     public static void newPassword() {
         Scanner sc = new Scanner(System.in);
-        boolean exit = false;
-        System.out.println("Enter your ID: ");
+        System.out.println("Enter your ID (Enter \"-1\" to go back to main menu): ");
         int inputId = sc.nextInt();
+        if (inputId == -1) {
+            System.out.println("Going back to main menu.");
+            return;
+        }
         while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
             System.out.println("That ID does not exist, try again (Enter \"-1\" to go back to main menu): ");
             inputId = sc.nextInt();
             if (inputId == -1) {
-                exit = true;
-                break;
+                System.out.println("Going back to main menu.");
+                return;
+
             }
         }
-        if (exit == false) {
-            if (Student.getDatabase().get(inputId) != null || Instructor.getDatabase().get(inputId) != null) {
+        if (Student.getDatabase().get(inputId) != null || Instructor.getDatabase().get(inputId) != null) {
 
-                System.out.println("Update your password: ");
-                String newPassword = sc.next();
-                System.out.println("Password has been updated");
-                if (Student.getDatabase().keySet().contains(inputId)) {
-                    Student.getDatabase().put(inputId, newPassword);
-                    Student.getStudents().get(inputId).setPassword(newPassword);
-                } else {
-                    Instructor.getDatabase().put(inputId, newPassword);
-                    Instructor.getTeachers().get(inputId).setPassword(newPassword);
-                }
-
+            System.out.println("Update your password: ");
+            String newPassword = sc.next();
+            System.out.println("Password has been updated");
+            if (Student.getDatabase().keySet().contains(inputId)) {
+                Student.getDatabase().put(inputId, newPassword);
+                Student.getStudents().get(inputId).setPassword(newPassword);
             } else {
-                System.out.println("Create your password: ");
-                String newPassword = sc.next();
-                System.out.println("Account has been created");
-                if (Student.getDatabase().keySet().contains(inputId)) {
-                    Student.getDatabase().put(inputId, newPassword);
-                    Student.getStudents().get(inputId).setPassword(newPassword);
-                } else {
-                    Instructor.getDatabase().put(inputId, newPassword);
-                    Instructor.getTeachers().get(inputId).setPassword(newPassword);
-                }
+                Instructor.getDatabase().put(inputId, newPassword);
+                Instructor.getTeachers().get(inputId).setPassword(newPassword);
             }
-            System.out.println("Going back to main menu.");
+
         } else {
-            System.out.println("Going back to main menu.");
+            System.out.println("Create your password: ");
+            String newPassword = sc.next();
+            System.out.println("Account has been initialized");
+            if (Student.getDatabase().keySet().contains(inputId)) {
+                Student.getDatabase().put(inputId, newPassword);
+                Student.getStudents().get(inputId).setPassword(newPassword);
+            } else {
+                Instructor.getDatabase().put(inputId, newPassword);
+                Instructor.getTeachers().get(inputId).setPassword(newPassword);
+            }
         }
+        System.out.println("Going back to main menu.");
     }
 
     public static Course getCourse() {
@@ -517,7 +579,6 @@ public class UserInputManager {
 
     public static void sortCourses(List<Course> courses) {
         Scanner sc = new Scanner(System.in);
-        boolean back = false;
         System.out.println("""
                            How do you want to sort the page (Enter "-1" to go back to main menu)?
                            [1]  Alphabetically
@@ -600,7 +661,6 @@ public class UserInputManager {
 
     public static void sortStudents(List<Student> students) {
         Scanner sc = new Scanner(System.in);
-        boolean back = false;
         System.out.println("""
                            How do you want to sort the page (Enter "-1" to go back to main menu)?
                            
@@ -635,7 +695,6 @@ public class UserInputManager {
 
     public static void sortInstructors(List<Instructor> teachers) {
         Scanner sc = new Scanner(System.in);
-        boolean back = false;
         System.out.println("""
                            How do you want to sort the page (Enter "-1" to go back to main menu)?
                            
@@ -670,7 +729,6 @@ public class UserInputManager {
 
     public static void sortGrades(List<Course> courses, Student student) {
         Scanner sc = new Scanner(System.in);
-        boolean back = false;
         System.out.println("""
                            How do you want to sort the page (Enter "-1" to go back to main menu)?
                            
