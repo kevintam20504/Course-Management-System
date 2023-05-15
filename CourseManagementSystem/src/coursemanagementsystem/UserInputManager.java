@@ -1,4 +1,4 @@
- package coursemanagementsystem;
+package coursemanagementsystem;
 
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -24,7 +24,7 @@ public class UserInputManager {
 
             return userOption;
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value between 1 - 3.");
             return mainMenu();
         }
 
@@ -104,24 +104,12 @@ public class UserInputManager {
             System.out.println("Wrong id or password. Please try again.");
             // call login() again if user enters wrong combination
             return login();
-        }catch(Exception e){
-            System.out.println("Cannot do that.");
+        } catch (Exception e) {
+            System.out.println("Invalid input. Enter an integer value.");
             return login();
         }
     }
 
-    /*
-    public static int displayActions(Account accountType) {
-        if (accountType.getClass() == Student.class) {
-            return studentMenu();
-        } else if (accountType.getClass() == Instructor.class) {
-            return instructorMenu();
-        } else if (accountType.getClass() == Admin.class) {
-            return adminMenu();
-        }
-        return 0;
-    }
-     */
     public static int adminMenu() {
         try {
             Scanner sc = new Scanner(System.in);
@@ -148,7 +136,7 @@ public class UserInputManager {
             }
             return userOption;
         } catch (Exception e) {
-            System.out.println("Cannot do that. ");
+            System.out.println("Invalid input. Enter an integer value between 1 - 9. ");
             return adminMenu();
         }
     }
@@ -175,7 +163,7 @@ public class UserInputManager {
             }
             return userOption;
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value between 1 - 5.");
             return studentMenu();
         }
     }
@@ -203,7 +191,7 @@ public class UserInputManager {
             }
             return userOption;
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value between 1 - 6.");
             return instructorMenu();
         }
     }
@@ -235,7 +223,7 @@ public class UserInputManager {
                 deleteAccount();
             }
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value.");
             deleteAccount();
         }
     }
@@ -298,7 +286,7 @@ public class UserInputManager {
                 Instructor.getTeachers().put(newId, newInstructor);
             }
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value.");
             newAccount();
         }
     }
@@ -343,10 +331,11 @@ public class UserInputManager {
             } else {
                 student.getCourses().add(course);
                 course.getStudents().add(student);
+                course.getGrades().put(student, 0);
                 System.out.println(course.getName() + " has been added to " + student.getFirstName() + "'s schedule");
             }
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value.");
             assignCourse();
         }
     }
@@ -396,7 +385,7 @@ public class UserInputManager {
             System.out.println(newCourseName + " has been created");
 
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value.");
             newCourse();
         }
 
@@ -427,13 +416,12 @@ public class UserInputManager {
                 Course.getCourses().remove(inputCourseId);
             }
         } catch (Exception e) {
-            System.out.println("Cannot do that.");
+            System.out.println("Invalid input. Enter an integer value.");
             deleteCourse();
         }
 
     }
 
-    /////////////////////////////////////
     //for viewCourses(), viewStudents(), viewGrades(), etc
     public static String goBack_Sort_orPrint() {
         Scanner sc = new Scanner(System.in);
@@ -491,7 +479,7 @@ public class UserInputManager {
                 exit = false;
                 System.out.println("Enter your ID (Enter \"-1\" to go back to main menu): ");
                 inputId = sc.nextInt();
-                if(inputId == -1){
+                if (inputId == -1) {
                     return;
                 }
                 break;
@@ -591,7 +579,7 @@ public class UserInputManager {
                 }
                 break;
             } catch (InputMismatchException e) {
-                System.out.println("Invalid input. Enter integer value.");
+                System.out.println("Invalid input. Enter an integer value.");
             }
         }
 
@@ -821,7 +809,7 @@ public class UserInputManager {
                     exit = true;
                     break;
                 case "2": //grades descending
-                    
+
                     Collections.sort(courses, ((c1, c2) -> c2.getGrades().get(student) - c1.getGrades().get(student)));
                     System.out.println("Grades:");
                     for (Course c : courses) {
