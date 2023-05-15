@@ -70,7 +70,7 @@ public class UserInputManager {
                 }
 
             } catch (NullPointerException e) {
-                if (Student.getStudents().get(id) == null) {
+                if (Student.getStudents().get(id) == null && Instructor.getTeachers().get(id) == null) {
                     System.out.println("Wrong id or password. Please try again.");
                     return login();
                 } else {
@@ -264,12 +264,14 @@ public class UserInputManager {
                 int newId = newStudent.getId();
                 Student.getDatabase().put(newId, null);
                 Student.getStudents().put(newId, newStudent);
+                System.out.println("Added new student: " + newStudent);
             } //if account is instructor
             else {
                 Instructor newInstructor = new Instructor(fname, lname, null);
                 int newId = newInstructor.getId();
                 Instructor.getDatabase().put(newId, null);
                 Instructor.getTeachers().put(newId, newInstructor);
+                System.out.println("Added new intructor: " + newInstructor);
             }
         } catch (Exception e) {
             System.out.println("Invalid input. Enter an integer value.");
@@ -368,6 +370,7 @@ public class UserInputManager {
             }
             Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
             Course newCourse = new Course(newCourseId, newCourseName, instructor);
+            System.out.println("Course: [" + newCourse.getCourseId() + "] " + newCourse.getName() + " has been created");
 
         } catch (Exception e) {
             System.out.println("Invalid input. Enter an integer value.");
@@ -601,12 +604,16 @@ public class UserInputManager {
                            How do you want to sort the page?
                            [1]  Alphabetically
                            [2]  Reverse Alphabetically
+                           
                            [3]  Average (Ascending)
                            [4]  Average (Descending)
+                           
                            [5]  Teacher's last name (Alphabetically)
                            [6]  Teacher's last name (Reverse Alphabetically)
+                           
                            [7]  Amount of Students (Ascending)
                            [8]  Amount of Students (Descending)
+                           
                            [9]  Back
                            """);
 
@@ -695,6 +702,7 @@ public class UserInputManager {
                            
                            [1]  Student's last name (Alphabetically)
                            [2]  Student's last name (Reverse Alphabetically)
+                           
                            [3]  Back
                            """);
 
@@ -736,6 +744,7 @@ public class UserInputManager {
                            
                            [1]  Instructor's last name (Alphabetically)
                            [2]  Instructor's last name (Reverse Alphabetically)
+                           
                            [3]  Back
                            """);
 
@@ -776,8 +785,10 @@ public class UserInputManager {
                            
                            [1]  Grades (Ascending)
                            [2]  Grades (Descending)
+                           
                            [3]  Average (Ascending)
                            [4]  Average (Descending)
+                           
                            [5]  Back
                            """);
 
