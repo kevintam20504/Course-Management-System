@@ -13,7 +13,7 @@ public class Student extends Account {
         super(fName, lName, password);
         Student.database.put(id, password);
         Student.students.put(id, this);
-        System.out.println("Added new student: " + this);
+        
     }
 
     public ArrayList<Course> getCourses() {
@@ -191,7 +191,7 @@ public class Student extends Account {
 
     @Override
     public String toString() {
-        return "[" + this.id + "] " + this.lastName + " " + this.firstName;
+        return "[" + this.id + "] " + this.lastName + ", " + this.firstName;
     }
 
 }
