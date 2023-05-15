@@ -8,10 +8,10 @@ public class Admin extends Account {
     private static HashMap<Integer, String> database = new HashMap<>();
     private static HashMap<Integer, Admin> admin = new HashMap<>();
 
-    public Admin(int id, String password) {
-        super(id, password);
+    public Admin(String password) {
+        super(password);
         firstName = "Admin";
-        lastName = " ";
+        lastName = "";
         Admin.database.put(id, password);
         Admin.admin.put(id, this);
     }

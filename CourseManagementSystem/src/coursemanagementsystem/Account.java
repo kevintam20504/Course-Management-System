@@ -5,17 +5,18 @@ public abstract class Account {
     protected String firstName;
     protected String lastName;
     protected int id;
+    protected static int counter = 0;
     protected String password;
 
-    public Account(int id, String password) {
-        this.id = id;
+    public Account(String password) {
+        this.id = counter++;
         this.password = password;
     }
 
-    public Account(String firstName, String lastName, int id, String password) {
+    public Account(String firstName, String lastName, String password) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.id = id;
+        this.id = counter++;
         this.password = password;
     }
 
@@ -36,11 +37,19 @@ public abstract class Account {
     }
 
     public int getId() {
-        return this.id;
+        return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public static int getCounter() {
+        return counter;
+    }
+
+    public static void setCounter(int counter) {
+        Account.counter = counter;
     }
 
     public String getPassword() {
@@ -52,5 +61,9 @@ public abstract class Account {
     }
 
     public abstract void performAction();
+    
+    public static void viewAccounts(){
+        
+    }
 
 }

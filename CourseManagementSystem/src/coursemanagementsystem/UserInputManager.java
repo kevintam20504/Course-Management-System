@@ -70,7 +70,7 @@ public class UserInputManager {
                 }
 
             } catch (NullPointerException e) {
-                if (Student.getStudents().get(id) == null && Instructor.getTeachers().get(id) == null && Admin.getAdmin().get(id) == null) {
+                if (Student.getStudents().get(id) == null) {
                     System.out.println("Wrong id or password. Please try again.");
                     return login();
                 } else {
@@ -243,23 +243,7 @@ public class UserInputManager {
                 System.out.println("Going back to main menu.");
                 return;
             }
-            System.out.println("Enter new ID (Enter \"-1\" to go back to main menu): ");
-            int newId = sc.nextInt();
-            if (newId == -1) {
-                System.out.println("Going back to main menu.");
-                return;
-            }
-            if (newId < -1 || newId == 0) {
-                throw new ArithmeticException("ID cannot be negative or 0");
-            }
-            while (Student.getDatabase().containsKey(newId) || Instructor.getDatabase().containsKey(newId)) {
-                System.out.println("Cannot create this ID, try again (Enter \"-1\" to go back to main menu): ");
-                newId = sc.nextInt();
-                if (newId == -1) {
-                    System.out.println("Going back to main menu.");
-                    return;
-                }
-            }
+
             System.out.println("Is this person:\n1. A student\n2. An instructor\n\n(\"-1\" to go back to main menu)\nEnter: ");
             int choice = sc.nextInt();
             if (choice == -1) {
@@ -276,12 +260,14 @@ public class UserInputManager {
             }
             // if account is student
             if (choice == 1) {
-                Student newStudent = new Student(fname, lname, newId, null);
+                Student newStudent = new Student(fname, lname, null);
+                int newId = newStudent.getId();
                 Student.getDatabase().put(newId, null);
                 Student.getStudents().put(newId, newStudent);
             } //if account is instructor
             else {
-                Instructor newInstructor = new Instructor(fname, lname, newId, null);
+                Instructor newInstructor = new Instructor(fname, lname, null);
+                int newId = newInstructor.getId();
                 Instructor.getDatabase().put(newId, null);
                 Instructor.getTeachers().put(newId, newInstructor);
             }
@@ -382,7 +368,6 @@ public class UserInputManager {
             }
             Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
             Course newCourse = new Course(newCourseId, newCourseName, instructor);
-            System.out.println(newCourseName + " has been created");
 
         } catch (Exception e) {
             System.out.println("Invalid input. Enter an integer value.");
@@ -482,21 +467,51 @@ public class UserInputManager {
                 if (inputId == -1) {
                     return;
                 }
+                while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
+                    System.out.println("That ID does not exist, try again (Enter \"-1\" to go back to main menu): ");
+                    inputId = sc.nextInt();
+                    if (inputId == -1) {
+                        System.out.println("Going back to main menu.");
+                        return;
+                    }
+                }
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Enter an integer value.");
             }
         }
 
-        while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
-            System.out.println("That ID does not exist, try again (Enter \"-1\" to go back to main menu): ");
-            inputId = sc.nextInt();
-            if (inputId == -1) {
+        System.out.println("Enter your first name (Enter \"-1\" to go back to main menu): ");
+        String inputFname = sc.next();
+        if (inputFname.equals("-1")) {
+            return;
+
+        }
+        Student s = Student.getStudents().get(inputId);
+        Instructor i = Instructor.getTeachers().get(inputId);
+        while ((s != null && !s.getFirstName().equals(inputFname)) || (i != null && !i.getFirstName().equals(inputFname))) {
+            System.out.println("Input does not match with id, try again (Enter \"-1\" to go back to main menu): ");
+            inputFname = sc.next();
+            if (inputFname.equals("-1")) {
                 System.out.println("Going back to main menu.");
                 return;
-
             }
         }
+
+        System.out.println("Enter your last name (Enter \"-1\" to go back to main menu): ");
+        String inputLname = sc.next();
+        if (inputLname.equals("-1")) {
+            return;
+        }
+        while ((s != null && !s.getLastName().equals(inputLname)) || (i != null && !i.getLastName().equals(inputLname))) {
+            System.out.println("Input does not match with id, try again (Enter \"-1\" to go back to main menu): ");
+            inputLname = sc.next();
+            if (inputLname.equals("-1")) {
+                System.out.println("Going back to main menu.");
+                return;
+            }
+        }
+
         if (Student.getDatabase().get(inputId) != null || Instructor.getDatabase().get(inputId) != null) {
 
             System.out.println("Update your password: ");

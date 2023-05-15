@@ -9,10 +9,11 @@ public class Student extends Account {
     private static HashMap<Integer, Student> students = new HashMap<>();
     private static HashMap<Integer, String> database = new HashMap<>();
 
-    public Student(String fName, String lName, int id, String password) {
-        super(fName, lName, id, password);
+    public Student(String fName, String lName, String password) {
+        super(fName, lName, password);
         Student.database.put(id, password);
         Student.students.put(id, this);
+        System.out.println("Added new student: " + this);
     }
 
     public ArrayList<Course> getCourses() {
