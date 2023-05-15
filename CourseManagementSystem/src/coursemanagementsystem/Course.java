@@ -22,7 +22,6 @@ public class Course {
         this.teacher = teacher;
         Course.courses.put(courseId, this);
         teacher.getCourses().add(this);
-        System.out.println("Course: [" + this.courseId + "] " + this.getName() + " has been created");
     }
 
     public int getCourseId() {
