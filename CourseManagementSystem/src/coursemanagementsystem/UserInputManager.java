@@ -70,7 +70,7 @@ public class UserInputManager {
                 }
 
             } catch (NullPointerException e) {
-                if (Student.getStudents().get(id) == null) {
+                if (Student.getStudents().get(id) == null && Instructor.getTeachers().get(id) == null && Admin.getAdmin().get(id) == null) {
                     System.out.println("Wrong id or password. Please try again.");
                     return login();
                 } else {
