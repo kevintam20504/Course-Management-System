@@ -36,7 +36,7 @@ public class Admin extends Account {
         System.out.println("All Students at Vanier: ");
         ArrayList<Student> list = new ArrayList<>(Student.getStudents().values());
         for (Student s : list) {
-            System.out.println(s.getFirstName() + " " + s.getLastName() + " (" + s.getId() + ")");
+            System.out.println(s);
         }
 
         while (true) {
