@@ -1,6 +1,7 @@
  package coursemanagementsystem;
 
 import java.util.Collections;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -432,6 +433,7 @@ public class UserInputManager {
 
     }
 
+    /////////////////////////////////////
     //for viewCourses(), viewStudents(), viewGrades(), etc
     public static String goBack_Sort_orPrint() {
         Scanner sc = new Scanner(System.in);
@@ -487,6 +489,21 @@ public class UserInputManager {
             System.out.println("Going back to main menu.");
             return;
         }
+        boolean exit;
+        int inputId;
+        Scanner sc;
+        while (true) {
+            try {
+                sc = new Scanner(System.in);
+                exit = false;
+                System.out.println("Enter your ID: ");
+                inputId = sc.nextInt();
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter an integer value.");
+            }
+        }
+
         while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
             System.out.println("That ID does not exist, try again (Enter \"-1\" to go back to main menu): ");
             inputId = sc.nextInt();
@@ -525,62 +542,94 @@ public class UserInputManager {
     }
 
     public static Course getCourse() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the id of the course you want to find (Enter \"-1\" to go back to main menu): ");
-        int inputId = sc.nextInt();
-        if (inputId == -1) {
-            System.out.println("Going back to main menu.");
-            return null;
-        }
-        while (!Course.getCourses().containsKey(inputId)) {
-            System.out.println("Invalid course ID, try again (Enter \"-1\" to go back to main menu): ");
-            inputId = sc.nextInt();
-            if (inputId == -1) {
-                System.out.println("Going back to main menu.");
-                return null;
+        Scanner sc;
+        int inputId;
+
+        while (true) {
+            try {
+                sc = new Scanner(System.in);
+                System.out.println("Enter the id of the course you want to find (Enter \"-1\" to go back to main menu): ");
+                inputId = sc.nextInt();
+                if (inputId == -1) {
+                    System.out.println("Going back to main menu.");
+                    return null;
+                }
+                while (!Course.getCourses().containsKey(inputId)) {
+                    System.out.println("Invalid course ID, try again (Enter \"-1\" to go back to main menu): ");
+                    inputId = sc.nextInt();
+                    if (inputId == -1) {
+                        System.out.println("Going back to main menu.");
+                        return null;
+                    }
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter an integer value.");
             }
         }
+
         return Course.getCourses().get(inputId);
 
     }
 
     public static Student getStudent() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the id of the student you want to find (Enter \"-1\" to go back to main menu): ");
-        int inputId = sc.nextInt();
-        if (inputId == -1) {
-            System.out.println("Going back to main menu.");
-            return null;
-        }
-        while (!Student.getStudents().containsKey(inputId)) {
-            System.out.println("Invalid student ID, try again (Enter \"-1\" to go back to main menu): ");
-            inputId = sc.nextInt();
-            if (inputId == -1) {
-                System.out.println("Going back to main menu.");
-                return null;
+        Scanner sc;
+        int inputId;
+
+        while (true) {
+            try {
+                sc = new Scanner(System.in);
+                System.out.println("Enter the id of the student you want to find (Enter \"-1\" to go back to main menu): ");
+                inputId = sc.nextInt();
+                if (inputId == -1) {
+                    System.out.println("Going back to main menu.");
+                    return null;
+                }
+                while (!Student.getStudents().containsKey(inputId)) {
+                    System.out.println("Invalid student ID, try again (Enter \"-1\" to go back to main menu): ");
+                    inputId = sc.nextInt();
+                    if (inputId == -1) {
+                        System.out.println("Going back to main menu.");
+                        return null;
+                    }
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter integer value.");
             }
         }
+
         return Student.getStudents().get(inputId);
     }
 
     public static int getGrade() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the grade you wish to assign the student (Enter \"-1\" to go back to main menu):");
-        int grade = sc.nextInt();
-        while (grade < -1 || grade > 100) {
-            System.out.println("Please enter a number between 0 and 100 (Enter \"-1\" to go back to main menu):");
-            grade = sc.nextInt();
+        Scanner sc;
+        int grade;
+        while (true) {
+            try {
+                sc = new Scanner(System.in);
+                System.out.println("Enter the grade you wish to assign the student (Enter \"-1\" to go back to main menu):");
+                grade = sc.nextInt();
+                while (grade < -1 || grade > 100) {
+                    System.out.println("Please enter a number between 0 and 100 (Enter \"-1\" to go back to main menu):");
+                    grade = sc.nextInt();
+                }
+                if (grade == -1) {
+                    System.out.println("Going back to main menu.");
+                }
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid input. Enter an integer value");
+            }
         }
-        if (grade == -1) {
-            System.out.println("Going back to main menu.");
-        }
+
         return grade;
     }
 
     public static void sortCourses(List<Course> courses) {
         Scanner sc = new Scanner(System.in);
         System.out.println("""
-                           How do you want to sort the page (Enter "-1" to go back to main menu)?
+                           How do you want to sort the page?
                            [1]  Alphabetically
                            [2]  Reverse Alphabetically
                            [3]  Average (Ascending)
@@ -589,104 +638,122 @@ public class UserInputManager {
                            [6]  Teacher's last name (Reverse Alphabetically)
                            [7]  Amount of Students (Ascending)
                            [8]  Amount of Students (Descending)
+                           [9]  Back
                            """);
-        int choice = sc.nextInt();
-        while (choice < -1 || choice > 8) {
-            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
-            choice = sc.nextInt();
-        }
-        if (choice != -1) {
+
+        boolean exit = false;
+        while (!exit) {
+            String choice = sc.next();
             switch (choice) {
-                case 1: //alphabetically
+                case "1": //alphabetically
                     Collections.sort(courses, ((c1, c2) -> c1.getName().compareTo(c2.getName())));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
+                    exit = true;
                     break;
-                case 2: //reverse alphabetically
+                case "2": //reverse alphabetically
                     Collections.sort(courses, ((c1, c2) -> c2.getName().compareTo(c1.getName())));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
-
+                    exit = true;
                     break;
-                case 3: //average ascending
+                case "3": //average ascending
                     Collections.sort(courses, (c1, c2) -> (Double.compare(c1.getAverage(), c2.getAverage())));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
+                    exit = true;
                     break;
-                case 4: //average descending
+                case "4": //average descending
                     Collections.sort(courses, (c1, c2) -> (Double.compare(c2.getAverage(), c1.getAverage())));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
+                    exit = true;
                     break;
-                case 5: //Teacher lname alphabetically
+                case "5": //Teacher lname alphabetically
                     Collections.sort(courses, ((c1, c2) -> c1.getTeacher().getLastName().compareTo(c2.getTeacher().getLastName())));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
+                    exit = true;
                     break;
-                case 6: //Teacher lname reverse alphabetically
+                case "6": //Teacher lname reverse alphabetically
                     Collections.sort(courses, ((c1, c2) -> c2.getTeacher().getLastName().compareTo(c1.getTeacher().getLastName())));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
+                    exit = true;
                     break;
-                case 7: //amount of students ascending
+                case "7": //amount of students ascending
                     Collections.sort(courses, ((c1, c2) -> c1.getStudents().size() - c2.getStudents().size()));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
+                    exit = true;
                     break;
-                case 8: //amount of students descending
+                case "8": //amount of students descending
                     Collections.sort(courses, ((c1, c2) -> c2.getStudents().size() - c1.getStudents().size()));
                     System.out.println("All courses taught: ");
                     for (Course course : courses) {
                         System.out.println(course);
                     }
+                    exit = true;
+                    break;
+                case "9":
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid input. Enter an integer value between 1-9.");
                     break;
             }
-
         }
     }
 
     public static void sortStudents(List<Student> students) {
         Scanner sc = new Scanner(System.in);
         System.out.println("""
-                           How do you want to sort the page (Enter "-1" to go back to main menu)?
+                           How do you want to sort the page?
                            
                            [1]  Student's last name (Alphabetically)
                            [2]  Student's last name (Reverse Alphabetically)
+                           [3]  Back
                            """);
-        int choice = sc.nextInt();
-        while (choice < -1 || choice > 2) {
-            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
-            choice = sc.nextInt();
-        }
-        if (choice != -1) {
+
+        boolean exit = false;
+        while (!exit) {
+            String choice = sc.next();
             switch (choice) {
-                case 1: //last name alphabetiaclly
+                case "1": //last name alphabetiaclly
                     Collections.sort(students, ((s1, s2) -> s1.getLastName().compareTo(s2.getLastName())));
                     System.out.println("All students:");
                     for (Student s : students) {
                         System.out.println(s);
                     }
+                    exit = true;
                     break;
-                case 2: //last name reverese alphabetically
+                case "2": //last name reverese alphabetically
                     Collections.sort(students, ((s1, s2) -> s2.getLastName().compareTo(s1.getLastName())));
                     System.out.println("All students:");
                     for (Student s : students) {
                         System.out.println(s);
                     }
+                    exit = true;
+                    break;
+                case "3":
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid input. Enter an integer value between 1-3.");
                     break;
             }
         }
@@ -700,30 +767,36 @@ public class UserInputManager {
                            
                            [1]  Instructor's last name (Alphabetically)
                            [2]  Instructor's last name (Reverse Alphabetically)
+                           [3]  Back
                            """);
-        int choice = sc.nextInt();
-        while (choice < -1 || choice > 2) {
-            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
-            choice = sc.nextInt();
-        }
-        if (choice != -1) {
+
+        boolean exit = false;
+        while (!exit) {
+            String choice = sc.next();
             switch (choice) {
-                case 1: //last name alphabetiaclly
+                case "1": //last name alphabetiaclly
                     Collections.sort(teachers, ((s1, s2) -> s1.getLastName().compareTo(s2.getLastName())));
                     System.out.println("All students:");
                     for (Instructor i : teachers) {
                         System.out.println(i);
                     }
+                    exit = true;
                     break;
-                case 2: //last name reverese alphabetically
+                case "2": //last name reverese alphabetically
                     Collections.sort(teachers, ((s1, s2) -> s2.getLastName().compareTo(s1.getLastName())));
                     System.out.println("All students:");
                     for (Instructor i : teachers) {
                         System.out.println(i);
                     }
+                    exit = true;
+                    break;
+                case "3":
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid input. Enter an integer value between 1-3.");
                     break;
             }
-
         }
     }
 
@@ -736,44 +809,53 @@ public class UserInputManager {
                            [2]  Grades (Descending)
                            [3]  Average (Ascending)
                            [4]  Average (Descending)
+                           [5]  Back
                            """);
-        int choice = sc.nextInt();
-        while (choice < -1 || choice > 4) {
-            System.out.println("Invalid choice try again (Enter \"-1\" to go back to main menu): ");
-            choice = sc.nextInt();
-        }
-        if (choice != -1) {
+
+        boolean exit = false;
+        while (!exit) {
+            String choice = sc.next();
             switch (choice) {
-                case 1: //grades ascending
+                case "1": //grades ascending
                     Collections.sort(courses, ((c1, c2) -> c1.getGrades().get(student) - c2.getGrades().get(student)));
                     System.out.println("Grades:");
                     for (Course c : courses) {
                         System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
                     }
+                    exit = true;
                     break;
-                case 2: //grades descending
+                case "2": //grades descending
+                    
                     Collections.sort(courses, ((c1, c2) -> c2.getGrades().get(student) - c1.getGrades().get(student)));
                     System.out.println("Grades:");
                     for (Course c : courses) {
                         System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
                     }
+                    exit = true;
                     break;
-                case 3: //average ascending
+                case "3": //average ascending
                     Collections.sort(courses, ((c1, c2) -> Double.compare(c1.getAverage(), c2.getAverage())));
                     System.out.println("Grades:");
                     for (Course c : courses) {
                         System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
                     }
+                    exit = true;
                     break;
-                case 4: //average descending
+                case "4": //average descending
                     Collections.sort(courses, ((c1, c2) -> Double.compare(c2.getAverage(), c1.getAverage())));
                     System.out.println("Grades:");
                     for (Course c : courses) {
                         System.out.println(c.getName() + ": " + c.getGrades().get(student) + "%, Average: " + c.getAverage() + "%");
                     }
+                    exit = true;
+                    break;
+                case "5":
+                    exit = true;
+                    break;
+                default:
+                    System.out.println("Invalid input. Enter an integer value between 1-9.");
                     break;
             }
         }
     }
-
 }
