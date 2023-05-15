@@ -482,13 +482,6 @@ public class UserInputManager {
     }
 
     public static void newPassword() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter your ID (Enter \"-1\" to go back to main menu): ");
-        int inputId = sc.nextInt();
-        if (inputId == -1) {
-            System.out.println("Going back to main menu.");
-            return;
-        }
         boolean exit;
         int inputId;
         Scanner sc;
@@ -496,8 +489,11 @@ public class UserInputManager {
             try {
                 sc = new Scanner(System.in);
                 exit = false;
-                System.out.println("Enter your ID: ");
+                System.out.println("Enter your ID (Enter \"-1\" to go back to main menu): ");
                 inputId = sc.nextInt();
+                if(inputId == -1){
+                    return;
+                }
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Enter an integer value.");
