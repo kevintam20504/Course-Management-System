@@ -70,7 +70,7 @@ public class UserInputManager {
                 }
 
             } catch (NullPointerException e) {
-                if (Student.getStudents().get(id) == null) {
+                if (Student.getStudents().get(id) == null && Instructor.getTeachers().get(id) == null) {
                     System.out.println("Wrong id or password. Please try again.");
                     return login();
                 } else {
@@ -243,7 +243,7 @@ public class UserInputManager {
                 System.out.println("Going back to main menu.");
                 return;
             }
-
+            
             System.out.println("Is this person:\n1. A student\n2. An instructor\n\n(\"-1\" to go back to main menu)\nEnter: ");
             int choice = sc.nextInt();
             if (choice == -1) {
@@ -264,12 +264,14 @@ public class UserInputManager {
                 int newId = newStudent.getId();
                 Student.getDatabase().put(newId, null);
                 Student.getStudents().put(newId, newStudent);
+                System.out.println("Added new student: " + newStudent);
             } //if account is instructor
             else {
                 Instructor newInstructor = new Instructor(fname, lname, null);
                 int newId = newInstructor.getId();
                 Instructor.getDatabase().put(newId, null);
                 Instructor.getTeachers().put(newId, newInstructor);
+                System.out.println("Added new intructor: " + newInstructor);
             }
         } catch (Exception e) {
             System.out.println("Invalid input. Enter an integer value.");
@@ -368,6 +370,7 @@ public class UserInputManager {
             }
             Instructor instructor = Instructor.getTeachers().get(inputInstructorId);
             Course newCourse = new Course(newCourseId, newCourseName, instructor);
+            System.out.println("Course: [" + newCourse.getCourseId() + "] " + newCourse.getName() + " has been created");
 
         } catch (Exception e) {
             System.out.println("Invalid input. Enter an integer value.");
@@ -467,51 +470,21 @@ public class UserInputManager {
                 if (inputId == -1) {
                     return;
                 }
-                while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
-                    System.out.println("That ID does not exist, try again (Enter \"-1\" to go back to main menu): ");
-                    inputId = sc.nextInt();
-                    if (inputId == -1) {
-                        System.out.println("Going back to main menu.");
-                        return;
-                    }
-                }
                 break;
             } catch (InputMismatchException e) {
                 System.out.println("Invalid input. Enter an integer value.");
             }
         }
 
-        System.out.println("Enter your first name (Enter \"-1\" to go back to main menu): ");
-        String inputFname = sc.next();
-        if (inputFname.equals("-1")) {
-            return;
-
-        }
-        Student s = Student.getStudents().get(inputId);
-        Instructor i = Instructor.getTeachers().get(inputId);
-        while ((s != null && !s.getFirstName().equals(inputFname)) || (i != null && !i.getFirstName().equals(inputFname))) {
-            System.out.println("Input does not match with id, try again (Enter \"-1\" to go back to main menu): ");
-            inputFname = sc.next();
-            if (inputFname.equals("-1")) {
+        while (!Student.getDatabase().keySet().contains(inputId) && !Instructor.getDatabase().keySet().contains(inputId)) {
+            System.out.println("That ID does not exist, try again (Enter \"-1\" to go back to main menu): ");
+            inputId = sc.nextInt();
+            if (inputId == -1) {
                 System.out.println("Going back to main menu.");
                 return;
+
             }
         }
-
-        System.out.println("Enter your last name (Enter \"-1\" to go back to main menu): ");
-        String inputLname = sc.next();
-        if (inputLname.equals("-1")) {
-            return;
-        }
-        while ((s != null && !s.getLastName().equals(inputLname)) || (i != null && !i.getLastName().equals(inputLname))) {
-            System.out.println("Input does not match with id, try again (Enter \"-1\" to go back to main menu): ");
-            inputLname = sc.next();
-            if (inputLname.equals("-1")) {
-                System.out.println("Going back to main menu.");
-                return;
-            }
-        }
-
         if (Student.getDatabase().get(inputId) != null || Instructor.getDatabase().get(inputId) != null) {
 
             System.out.println("Update your password: ");
@@ -631,12 +604,16 @@ public class UserInputManager {
                            How do you want to sort the page?
                            [1]  Alphabetically
                            [2]  Reverse Alphabetically
+                           
                            [3]  Average (Ascending)
                            [4]  Average (Descending)
+                           
                            [5]  Teacher's last name (Alphabetically)
                            [6]  Teacher's last name (Reverse Alphabetically)
+                           
                            [7]  Amount of Students (Ascending)
                            [8]  Amount of Students (Descending)
+                           
                            [9]  Back
                            """);
 
@@ -725,6 +702,7 @@ public class UserInputManager {
                            
                            [1]  Student's last name (Alphabetically)
                            [2]  Student's last name (Reverse Alphabetically)
+                           
                            [3]  Back
                            """);
 
@@ -766,6 +744,7 @@ public class UserInputManager {
                            
                            [1]  Instructor's last name (Alphabetically)
                            [2]  Instructor's last name (Reverse Alphabetically)
+                           
                            [3]  Back
                            """);
 
@@ -806,8 +785,10 @@ public class UserInputManager {
                            
                            [1]  Grades (Ascending)
                            [2]  Grades (Descending)
+                           
                            [3]  Average (Ascending)
                            [4]  Average (Descending)
+                           
                            [5]  Back
                            """);
 
