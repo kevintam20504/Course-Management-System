@@ -45,9 +45,8 @@ public class Instructor extends Account {
         if (!this.courses.isEmpty()) {
             ArrayList<String> list = new ArrayList<>();
             for (Course course : this.courses) {
-                double avgGrade = course.getAverage();
-                list.add(course.toString() + " Average: " + avgGrade);
-                System.out.println(course.toString() + " Average: " + avgGrade);
+                list.add(course.toString();
+                System.out.println(course.toString());
             }
             
             while(true){
